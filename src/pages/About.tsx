@@ -1,6 +1,7 @@
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { AdSense } from "@/components/AdSense";
 import { Home, Sparkles, Heart, Target, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -92,6 +93,15 @@ const About = () => {
             </Link>
           </div>
         </Card>
+
+        {/* AdSense - Below Content */}
+        <div className="flex justify-center fade-up">
+          <AdSense 
+            adSlot="0987654321"
+            adFormat="auto"
+            className="max-w-2xl w-full"
+          />
+        </div>
 
         <footer className="text-center text-muted-foreground text-sm fade-up pb-8">
           Keep challenging yourself 🌻

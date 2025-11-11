@@ -1,6 +1,7 @@
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ChallengeCard } from "@/components/ChallengeCard";
 import { StreakTracker } from "@/components/StreakTracker";
+import { AdSense } from "@/components/AdSense";
 import { Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -33,6 +34,15 @@ const Index = () => {
 
         {/* Streak Tracker */}
         <StreakTracker />
+
+        {/* AdSense - Below Content */}
+        <div className="flex justify-center py-4">
+          <AdSense 
+            adSlot="1234567890"
+            adFormat="auto"
+            className="max-w-2xl w-full"
+          />
+        </div>
 
         {/* Footer */}
         <footer className="text-center space-y-4 pt-8 fade-up">

@@ -175,3 +175,13 @@ All colors MUST be HSL.
 .float-animation {
   animation: float 6s ease-in-out infinite;
 }
+
+/* AdSense styling */
+.adsense-container {
+  margin: 1rem auto;
+  padding: 0.5rem;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
