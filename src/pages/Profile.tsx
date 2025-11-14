@@ -89,8 +89,17 @@ const Profile = () => {
               {profile?.username || user?.email}
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Button onClick={handleLogout} variant="outline">
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-lg border border-yellow-500/20">
+              <div className="flex items-center gap-3">
+                <div className="text-3xl">🏆</div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Points</p>
+                  <p className="text-2xl font-bold">{profile?.total_points || 0}</p>
+                </div>
+              </div>
+            </div>
+            <Button onClick={handleLogout} variant="outline" className="w-full">
               Logout
             </Button>
           </CardContent>

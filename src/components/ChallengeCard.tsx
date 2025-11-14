@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Plus, Check, X, Share2 } from "lucide-react";
+import { RefreshCw, Plus, Check, X, Share2, Coins } from "lucide-react";
 import { challenges, motivationalQuotes, Challenge } from "@/data/challenges";
 import { Confetti } from "./Confetti";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export function ChallengeCard() {
   const [currentChallenge, setCurrentChallenge] = useState<Challenge | null>(null);
@@ -47,8 +48,28 @@ export function ChallengeCard() {
     }));
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
+    if (!currentChallenge) return;
+
     setShowConfetti(true);
+    
+    // Save to database if user is logged in
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      try {
+        const { error } = await supabase.from("challenge_completions").insert({
+          user_id: user.id,
+          challenge_text: currentChallenge.text,
+          challenge_category: currentChallenge.category,
+          points_earned: 10,
+        });
+
+        if (error) throw error;
+        toast.success("🎉 +10 points earned!");
+      } catch (error: any) {
+        console.error("Error saving challenge:", error);
+      }
+    }
     
     // Update streak
     const saved = localStorage.getItem("challengeStreak");
@@ -79,7 +100,7 @@ export function ChallengeCard() {
 
     setTimeout(() => {
       setShowConfetti(false);
-      window.location.reload(); // Refresh to update streak
+      window.location.reload();
     }, 2000);
   };
 

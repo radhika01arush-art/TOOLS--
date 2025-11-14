@@ -9,6 +9,7 @@ import { ArrowLeft, Trophy } from "lucide-react";
 const Leaderboard = () => {
   const navigate = useNavigate();
   const [leaderboards, setLeaderboards] = useState<any>({});
+  const [pointsLeaderboard, setPointsLeaderboard] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ const Leaderboard = () => {
 
   const loadLeaderboards = async () => {
     try {
+      // Load game scores
       const { data: scores } = await supabase
         .from("scores")
         .select("*, profiles(username)")
@@ -32,6 +34,15 @@ const Leaderboard = () => {
       });
 
       setLeaderboards(boards);
+
+      // Load points leaderboard
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, username, total_points")
+        .order("total_points", { ascending: false })
+        .limit(10);
+
+      setPointsLeaderboard(profiles || []);
     } catch (error) {
       console.error("Error loading leaderboards:", error);
     } finally {
@@ -89,12 +100,41 @@ const Leaderboard = () => {
             <CardDescription>Top players across all games</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="general_knowledge">
-              <TabsList className="grid w-full grid-cols-3">
+            <Tabs defaultValue="points">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="points">Points</TabsTrigger>
                 <TabsTrigger value="general_knowledge">GK</TabsTrigger>
                 <TabsTrigger value="mathematics">Math</TabsTrigger>
                 <TabsTrigger value="memory">Memory</TabsTrigger>
               </TabsList>
+              <TabsContent value="points" className="mt-4">
+                <div className="space-y-2">
+                  {pointsLeaderboard.length > 0 ? (
+                    pointsLeaderboard.map((profile, index) => (
+                      <div
+                        key={profile.id}
+                        className="flex items-center justify-between p-3 rounded-lg bg-secondary/50"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
+                            {index === 0 ? (
+                              <Trophy className="h-4 w-4 text-primary" />
+                            ) : (
+                              <span className="text-sm font-bold">{index + 1}</span>
+                            )}
+                          </div>
+                          <span className="font-medium">
+                            {profile.username || "Anonymous"}
+                          </span>
+                        </div>
+                        <span className="text-lg font-bold">{profile.total_points} pts</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-muted-foreground py-8">No points yet!</p>
+                  )}
+                </div>
+              </TabsContent>
               <TabsContent value="general_knowledge" className="mt-4">
                 {renderLeaderboard(leaderboards.general_knowledge)}
               </TabsContent>
