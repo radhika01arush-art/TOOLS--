@@ -13,6 +13,7 @@ export function ChallengeCard() {
   const [customChallenges, setCustomChallenges] = useState<Challenge[]>([]);
   const [isAddingCustom, setIsAddingCustom] = useState(false);
   const [customText, setCustomText] = useState("");
+  const [isChallengeRevealed, setIsChallengeRevealed] = useState(false);
 
   useEffect(() => {
     // Load custom challenges
@@ -28,6 +29,7 @@ export function ChallengeCard() {
       const data = JSON.parse(savedDaily);
       if (data.date === today) {
         setCurrentChallenge(data.challenge);
+        setIsChallengeRevealed(data.revealed || false);
         return;
       }
     }
@@ -40,12 +42,26 @@ export function ChallengeCard() {
     const allChallenges = [...challenges, ...customChallenges];
     const randomChallenge = allChallenges[Math.floor(Math.random() * allChallenges.length)];
     setCurrentChallenge(randomChallenge);
+    setIsChallengeRevealed(false);
     
     const today = new Date().toDateString();
     localStorage.setItem("dailyChallenge", JSON.stringify({
       date: today,
       challenge: randomChallenge,
+      revealed: false,
     }));
+  };
+
+  const handleRevealChallenge = () => {
+    setIsChallengeRevealed(true);
+    const today = new Date().toDateString();
+    if (currentChallenge) {
+      localStorage.setItem("dailyChallenge", JSON.stringify({
+        date: today,
+        challenge: currentChallenge,
+        revealed: true,
+      }));
+    }
   };
 
   const handleComplete = async () => {
@@ -142,94 +158,123 @@ export function ChallengeCard() {
     <>
       <Confetti show={showConfetti} />
       
-      <Card className="glass-card p-8 space-y-6 max-w-2xl w-full bounce-in">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl font-semibold text-muted-foreground">
-            Your challenge for today is...
-          </h2>
-          
-          {currentChallenge && (
-            <div className="space-y-4 fade-up">
-              <div className="text-7xl mb-4">{currentChallenge.emoji}</div>
-              <p className="text-3xl font-bold leading-relaxed">
-                {currentChallenge.text}
-              </p>
-              <div className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                {currentChallenge.category}
-              </div>
-            </div>
+      <Card className="glass-card p-8 space-y-6 relative overflow-hidden border-2">
+        {/* Decorative background */}
+        <div className="absolute top-0 right-0 text-9xl opacity-5 pointer-events-none">
+          {isChallengeRevealed ? currentChallenge?.emoji : "🎁"}
+        </div>
+
+        {/* Header */}
+        <div className="flex items-center justify-between relative z-10">
+          <div>
+            <h2 className="text-2xl font-bold gradient-text">Today's Challenge</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {isChallengeRevealed && currentChallenge?.category && (
+                <span className="capitalize">{currentChallenge.category}</span>
+              )}
+            </p>
+          </div>
+          {isChallengeRevealed && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={getNewChallenge}
+              className="hover:rotate-180 transition-transform duration-500"
+            >
+              <RefreshCw className="h-5 w-5" />
+            </Button>
           )}
         </div>
 
-        <div className="flex flex-wrap gap-3 justify-center">
-          <Button
-            onClick={getNewChallenge}
-            size="lg"
-            className="rounded-full bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-105"
-          >
-            <RefreshCw className="mr-2 h-5 w-5" />
-            Get New Challenge
-          </Button>
-          
-          <Button
-            onClick={() => setIsAddingCustom(!isAddingCustom)}
-            variant="outline"
-            size="lg"
-            className="rounded-full border-2 hover:bg-primary/5"
-          >
-            <Plus className="mr-2 h-5 w-5" />
-            Add Custom
-          </Button>
-          
-          <Button
-            onClick={handleShare}
-            variant="outline"
-            size="lg"
-            className="rounded-full border-2 hover:bg-secondary/5"
-          >
-            <Share2 className="mr-2 h-5 w-5" />
-            Share
-          </Button>
-        </div>
+        {/* Challenge Content */}
+        {!isChallengeRevealed ? (
+          <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 p-8 rounded-xl border-2 border-yellow-500/20 relative z-10 text-center space-y-4">
+            <div className="text-6xl animate-bounce">🎁</div>
+            <div className="space-y-2">
+              <p className="text-lg text-muted-foreground">Ready for today's challenge?</p>
+              <div className="flex items-center justify-center gap-2 text-3xl font-bold">
+                <Coins className="h-8 w-8 text-yellow-500" />
+                <span className="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
+                  +10 XP
+                </span>
+              </div>
+            </div>
+            <Button 
+              size="lg" 
+              onClick={handleRevealChallenge}
+              className="w-full text-lg font-semibold animate-pulse"
+            >
+              Claim Your Challenge
+            </Button>
+          </div>
+        ) : (
+          currentChallenge && (
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 p-6 rounded-xl border border-primary/10 relative z-10">
+              <p className="text-xl font-medium text-center">
+                {currentChallenge.emoji} {currentChallenge.text}
+              </p>
+            </div>
+          )
+        )}
 
-        {isAddingCustom && (
-          <div className="space-y-3 pt-4 border-t fade-up">
-            <input
-              type="text"
-              value={customText}
-              onChange={(e) => setCustomText(e.target.value)}
-              placeholder="Enter your custom challenge..."
-              className="w-full px-4 py-3 rounded-xl border-2 border-border focus:border-primary outline-none transition-colors bg-card"
-              onKeyDown={(e) => e.key === "Enter" && handleAddCustom()}
-            />
-            <Button onClick={handleAddCustom} className="w-full rounded-xl">
-              Add Challenge
+        {/* Action Buttons */}
+        {isChallengeRevealed && (
+          <div className="flex gap-3 relative z-10">
+            <Button 
+              onClick={handleComplete}
+              className="flex-1 text-lg font-semibold"
+              size="lg"
+            >
+              <Check className="mr-2 h-5 w-5" />
+              I Did It!
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleShare}
+            >
+              <Share2 className="h-5 w-5" />
             </Button>
           </div>
         )}
 
-        <div className="space-y-3 pt-6 border-t">
-          <p className="text-center font-semibold text-lg">Did you complete it?</p>
-          <div className="flex gap-3 justify-center">
+        {/* Custom Challenge Section */}
+        {isChallengeRevealed && (
+          <div className="relative z-10">
             <Button
-              onClick={handleComplete}
-              size="lg"
-              className="rounded-full bg-success hover:bg-success/90 hover:scale-105 transition-all"
+              onClick={() => setIsAddingCustom(!isAddingCustom)}
+              variant="ghost"
+              className="w-full"
             >
-              <Check className="mr-2 h-5 w-5" />
-              Yes! 🎉
+              <Plus className="mr-2 h-4 w-4" />
+              Add Custom Challenge
             </Button>
-            <Button
-              onClick={() => toast.info("No worries! You can try again tomorrow 💪")}
-              variant="outline"
-              size="lg"
-              className="rounded-full border-2"
-            >
-              <X className="mr-2 h-5 w-5" />
-              Not Yet
-            </Button>
+
+            {isAddingCustom && (
+              <div className="space-y-3 pt-4">
+                <input
+                  type="text"
+                  value={customText}
+                  onChange={(e) => setCustomText(e.target.value)}
+                  placeholder="Enter your custom challenge..."
+                  className="w-full px-4 py-3 rounded-xl border-2 border-border focus:border-primary outline-none transition-colors bg-card"
+                  onKeyDown={(e) => e.key === "Enter" && handleAddCustom()}
+                />
+                <div className="flex gap-2">
+                  <Button onClick={handleAddCustom} className="flex-1">
+                    Add Challenge
+                  </Button>
+                  <Button 
+                    onClick={() => setIsAddingCustom(false)} 
+                    variant="outline"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </Card>
     </>
   );
