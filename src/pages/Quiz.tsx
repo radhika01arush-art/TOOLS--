@@ -18,8 +18,8 @@ const Quiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [user, setUser] = useState<any>(null);
 
-  const questions = type === "gk" ? gkQuestions : mathQuestions;
-  const gameType = type === "gk" ? "General Knowledge" : "Mathematics";
+  const questions = type === "general_knowledge" ? gkQuestions : mathQuestions;
+  const gameType = type === "general_knowledge" ? "General Knowledge" : "Mathematics";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -54,7 +54,7 @@ const Quiz = () => {
     try {
       const { error } = await supabase.from("scores").insert({
         user_id: user.id,
-        game_type: type === "gk" ? "general_knowledge" : "mathematics",
+        game_type: type === "general_knowledge" ? "general_knowledge" : "mathematics",
         score: score + (selectedAnswer === questions[currentQuestion].correctAnswer ? 1 : 0),
         total_questions: questions.length,
       });
