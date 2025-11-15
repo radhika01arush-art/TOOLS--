@@ -34,28 +34,28 @@ const Index = () => {
       description: "Test your knowledge across various topics",
       icon: Brain,
       path: "/quiz/general_knowledge",
-      color: "text-blue-500"
+      color: "text-primary"
     },
     {
       title: "Mathematics",
       description: "Challenge your math skills",
       icon: Calculator,
       path: "/quiz/mathematics",
-      color: "text-green-500"
+      color: "text-accent"
     },
     {
       title: "Memory Game",
       description: "Match the emoji pairs",
       icon: Grid3x3,
       path: "/memory",
-      color: "text-purple-500"
+      color: "text-secondary"
     },
     {
       title: "Trivia Facts",
       description: "Learn interesting facts",
       icon: Lightbulb,
       path: "/trivia",
-      color: "text-yellow-500"
+      color: "text-success"
     }
   ];
 
@@ -92,12 +92,15 @@ const Index = () => {
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-3">
-            <Sparkles className="h-10 w-10 text-primary" />
+          <h1 className="text-5xl md:text-7xl font-extrabold gradient-text flex items-center justify-center gap-4 mb-4">
+            <Sparkles className="h-12 w-12 text-primary animate-pulse" />
             Challenge Me
           </h1>
-          <p className="text-xl text-muted-foreground">
-            Test your skills with fun games and challenges
+          <p className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+            Essential Tools for Daily Life
+          </p>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Boost your skills with our collection of practical tools and engaging challenges
           </p>
           <div className="flex justify-center mt-4">
             <Button onClick={() => navigate("/leaderboard")} size="lg" variant="outline" className="gap-2">
@@ -108,21 +111,31 @@ const Index = () => {
         </header>
 
         {/* Games Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          {games.map((game) => (
-            <Card key={game.path} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(game.path)}>
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <game.icon className={`h-8 w-8 ${game.color}`} />
-                  <CardTitle>{game.title}</CardTitle>
-                </div>
-                <CardDescription>{game.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full">Play Now</Button>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="space-y-4">
+          <h2 className="text-3xl font-bold text-foreground text-center">Available Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            {games.map((game) => (
+              <Card 
+                key={game.path} 
+                className="glass-card hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group border-2 hover:border-primary/50"
+                onClick={() => navigate(game.path)}
+              >
+                <CardHeader className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-xl bg-muted group-hover:scale-110 transition-transform">
+                      <game.icon className={`h-8 w-8 ${game.color}`} />
+                    </div>
+                    <CardTitle className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
+                      {game.title}
+                    </CardTitle>
+                  </div>
+                  <CardDescription className="text-base font-medium text-muted-foreground">
+                    {game.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
         </div>
 
         {/* AdSense */}
@@ -135,20 +148,20 @@ const Index = () => {
         </div>
 
         {/* Footer */}
-        <footer className="text-center space-y-4 pt-4 pb-8">
-          <p className="text-lg text-muted-foreground italic">
-            Small actions. Big growth. Keep challenging yourself 🌻
-          </p>
-          <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-            <Link to="/about" className="hover:text-primary transition-colors underline">
+        <footer className="text-center pt-4 space-y-3 border-t border-border/50 mt-8 pb-8">
+          <p className="text-lg font-bold text-foreground">Small actions. Big growth. Keep challenging yourself 🌻</p>
+          <div className="flex items-center justify-center gap-4 text-sm">
+            <Link to="/about" className="font-semibold text-primary hover:text-accent transition-colors">
               About
             </Link>
-            <span>•</span>
-            <Link to="/privacy" className="hover:text-primary transition-colors underline">
+            <span className="text-border">•</span>
+            <Link to="/privacy" className="font-semibold text-primary hover:text-accent transition-colors">
               Privacy Policy
             </Link>
-            <span>•</span>
-            <span>Developed with 💜 using Lovable</span>
+            <span className="text-border">•</span>
+            <p className="text-muted-foreground">
+              Developed with <span className="text-destructive">💜</span> using <span className="font-semibold text-foreground">Lovable</span>
+            </p>
           </div>
         </footer>
       </div>
