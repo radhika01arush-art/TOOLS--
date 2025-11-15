@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AdSense } from "@/components/AdSense";
-import { ChallengeCard } from "@/components/ChallengeCard";
 import { StreakTracker } from "@/components/StreakTracker";
 import { Sparkles, Brain, Calculator, Grid3x3, Lightbulb, Trophy, User, LogOut, LogIn } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -103,11 +102,8 @@ const Index = () => {
           </p>
         </header>
 
-        {/* Daily Challenge Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ChallengeCard />
-          <StreakTracker />
-        </div>
+        {/* Streak Tracker */}
+        <StreakTracker />
 
         {/* Leaderboard Link */}
         <div className="flex justify-center">
