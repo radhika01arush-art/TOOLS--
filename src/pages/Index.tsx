@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Sparkles, User, LogOut, LogIn } from "lucide-react";
+import { Sparkles, User, LogOut, LogIn, Calculator } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
@@ -72,11 +73,27 @@ const Index = () => {
           </p>
         </header>
 
-        {/* Tools Section - Empty State */}
-        <div className="text-center py-16">
-          <p className="text-xl text-muted-foreground">
-            Tools coming soon...
-          </p>
+        {/* Tools Section */}
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Available Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card 
+              className="glass-card hover:shadow-xl transition-all duration-300 cursor-pointer group border-2 hover:border-primary/50"
+              onClick={() => navigate("/unit-converter")}
+            >
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                    <Calculator className="h-8 w-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold">Unit Converter</CardTitle>
+                </div>
+                <CardDescription className="text-base">
+                  Convert between different units of measurement including length, weight, temperature, volume, speed, and area
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
         </div>
 
         {/* Footer */}
