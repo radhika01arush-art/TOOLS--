@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Sparkles, User, LogOut, LogIn, Calculator } from "lucide-react";
+import { Sparkles, User, LogOut, LogIn, Calculator, Percent } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -90,6 +90,23 @@ const Index = () => {
                 </div>
                 <CardDescription className="text-base">
                   Convert between different units of measurement including length, weight, temperature, volume, speed, and area
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card 
+              className="glass-card hover:shadow-xl transition-all duration-300 cursor-pointer group border-2 hover:border-primary/50"
+              onClick={() => navigate("/percentage-calculator")}
+            >
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                    <Percent className="h-8 w-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold">Percentage Calculator</CardTitle>
+                </div>
+                <CardDescription className="text-base">
+                  Calculate percentages easily - find X% of Y, percentage change, and more
                 </CardDescription>
               </CardHeader>
             </Card>
