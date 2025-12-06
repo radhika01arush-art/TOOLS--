@@ -8,6 +8,7 @@ import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import Leaderboard from "./pages/Leaderboard";
 import UnitConverter from "./pages/UnitConverter";
@@ -26,6 +27,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/unit-converter" element={<UnitConverter />} />
           <Route path="/percentage-calculator" element={<PercentageCalculator />} />
           <Route path="/profit-loss-calculator" element={<ProfitLossCalculator />} />
