@@ -8,8 +8,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { Sparkles } from "lucide-react";
 
+type AuthMode = "login" | "signup" | "forgot";
+
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState<AuthMode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,7 +31,14 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/#/reset-password`,
+        });
+        if (error) throw error;
+        toast({ title: "Check your email for the reset link!" });
+        setMode("login");
+      } else if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -60,6 +69,25 @@ const Auth = () => {
     }
   };
 
+  const getTitle = () => {
+    if (mode === "forgot") return "Reset Password";
+    if (mode === "login") return "Welcome Back";
+    return "Create Account";
+  };
+
+  const getDescription = () => {
+    if (mode === "forgot") return "Enter your email to receive a reset link";
+    if (mode === "login") return "Sign in to continue";
+    return "Create your account";
+  };
+
+  const getButtonText = () => {
+    if (loading) return "Loading...";
+    if (mode === "forgot") return "Send Reset Link";
+    if (mode === "login") return "Sign In";
+    return "Sign Up";
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-background to-primary/5">
       <Card className="w-full max-w-md">
@@ -67,12 +95,8 @@ const Auth = () => {
           <div className="flex justify-center mb-4">
             <Sparkles className="h-12 w-12 text-primary" />
           </div>
-          <CardTitle className="text-2xl">
-            {isLogin ? "Welcome Back" : "Create Account"}
-          </CardTitle>
-          <CardDescription>
-            {isLogin ? "Sign in to continue" : "Create your account"}
-          </CardDescription>
+          <CardTitle className="text-2xl">{getTitle()}</CardTitle>
+          <CardDescription>{getDescription()}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleAuth} className="space-y-4">
@@ -87,32 +111,52 @@ const Auth = () => {
                 placeholder="you@example.com"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-                minLength={6}
-              />
-            </div>
+            {mode !== "forgot" && (
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="••••••••"
+                  minLength={6}
+                />
+              </div>
+            )}
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Loading..." : isLogin ? "Sign In" : "Sign Up"}
+              {getButtonText()}
             </Button>
           </form>
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center space-y-2">
+            {mode === "login" && (
+              <Button
+                variant="link"
+                onClick={() => setMode("forgot")}
+                className="text-sm"
+              >
+                Forgot password?
+              </Button>
+            )}
             <Button
               variant="link"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-sm"
+              onClick={() => setMode(mode === "signup" ? "login" : "signup")}
+              className="text-sm block w-full"
             >
-              {isLogin
-                ? "Don't have an account? Sign up"
-                : "Already have an account? Sign in"}
+              {mode === "signup"
+                ? "Already have an account? Sign in"
+                : "Don't have an account? Sign up"}
             </Button>
+            {mode === "forgot" && (
+              <Button
+                variant="link"
+                onClick={() => setMode("login")}
+                className="text-sm"
+              >
+                Back to login
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
