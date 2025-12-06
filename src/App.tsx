@@ -14,7 +14,7 @@ import Leaderboard from "./pages/Leaderboard";
 import UnitConverter from "./pages/UnitConverter";
 import PercentageCalculator from "./pages/PercentageCalculator";
 import ProfitLossCalculator from "./pages/ProfitLossCalculator";
-import TypingTest from "./pages/TypingTest";
+import TimeConverter from "./pages/TimeConverter";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +31,7 @@ const App = () => (
           <Route path="/unit-converter" element={<UnitConverter />} />
           <Route path="/percentage-calculator" element={<PercentageCalculator />} />
           <Route path="/profit-loss-calculator" element={<ProfitLossCalculator />} />
-          <Route path="/typing-test" element={<TypingTest />} />
+          <Route path="/time-converter" element={<TimeConverter />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/about" element={<About />} />
