@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { User, LogOut, Calculator, Percent, TrendingUp, Clock } from "lucide-react";
+import { LogOut, Calculator, Percent, TrendingUp, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -64,9 +64,6 @@ const Index = () => {
         {/* Header */}
         <header className="flex items-center justify-end gap-3 mb-12">
           <ThemeToggle />
-          <Button variant="ghost" size="icon" onClick={() => navigate("/profile")}>
-            <User className="h-5 w-5" />
-          </Button>
           <Button variant="ghost" size="icon" onClick={handleLogout}>
             <LogOut className="h-5 w-5" />
           </Button>
