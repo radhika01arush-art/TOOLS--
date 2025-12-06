@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { User, LogOut, LogIn, Calculator, Percent, TrendingUp } from "lucide-react";
+import { User, LogOut, Calculator, Percent, TrendingUp, Keyboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -22,6 +22,11 @@ const tools = [
     icon: TrendingUp,
     path: "/profit-loss-calculator",
   },
+  {
+    title: "Typing Test",
+    icon: Keyboard,
+    path: "/typing-test",
+  },
 ];
 
 const Index = () => {
@@ -30,15 +35,23 @@ const Index = () => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      if (!session) {
+        navigate("/auth");
+      } else {
+        setUser(session.user);
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      if (!session) {
+        navigate("/auth");
+      } else {
+        setUser(session.user);
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [navigate]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -49,25 +62,14 @@ const Index = () => {
     <div className="min-h-screen p-6 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <header className="flex items-center justify-between mb-12">
-          <h1 className="text-2xl font-bold text-foreground">Daily Tools</h1>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            {user ? (
-              <>
-                <Button variant="ghost" size="icon" onClick={() => navigate("/profile")}>
-                  <User className="h-5 w-5" />
-                </Button>
-                <Button variant="ghost" size="icon" onClick={handleLogout}>
-                  <LogOut className="h-5 w-5" />
-                </Button>
-              </>
-            ) : (
-              <Button variant="ghost" size="icon" onClick={() => navigate("/auth")}>
-                <LogIn className="h-5 w-5" />
-              </Button>
-            )}
-          </div>
+        <header className="flex items-center justify-end gap-3 mb-12">
+          <ThemeToggle />
+          <Button variant="ghost" size="icon" onClick={() => navigate("/profile")}>
+            <User className="h-5 w-5" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={handleLogout}>
+            <LogOut className="h-5 w-5" />
+          </Button>
         </header>
 
         {/* Tools Grid */}
