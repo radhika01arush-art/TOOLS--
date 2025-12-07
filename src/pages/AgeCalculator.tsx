@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Cake } from "lucide-react";
+import { ArrowLeft, Cake, PartyPopper } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { Confetti } from "@/components/Confetti";
 import {
   Select,
   SelectContent,
@@ -21,6 +22,7 @@ const months = [
 const AgeCalculator = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [username, setUsername] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -40,6 +42,9 @@ const AgeCalculator = () => {
     seconds: number;
   } | null>(null);
   const [nextBirthdayDate, setNextBirthdayDate] = useState<Date | null>(null);
+  const [showCountdown, setShowCountdown] = useState(false);
+  const [showBirthdayMessage, setShowBirthdayMessage] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -47,6 +52,8 @@ const AgeCalculator = () => {
         navigate("/auth");
       } else {
         setUser(session.user);
+        // Get username from profile or email
+        fetchUsername(session.user.id, session.user.email);
       }
     });
 
@@ -55,11 +62,28 @@ const AgeCalculator = () => {
         navigate("/auth");
       } else {
         setUser(session.user);
+        fetchUsername(session.user.id, session.user.email);
       }
     });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const fetchUsername = async (userId: string, email: string | undefined) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("username")
+      .eq("id", userId)
+      .single();
+    
+    if (data?.username) {
+      setUsername(data.username);
+    } else if (email) {
+      setUsername(email.split("@")[0]);
+    } else {
+      setUsername("Friend");
+    }
+  };
 
   useEffect(() => {
     if (day && month && year) {
@@ -71,8 +95,7 @@ const AgeCalculator = () => {
 
   // Live countdown timer
   useEffect(() => {
-    if (!nextBirthdayDate) {
-      setCountdown(null);
+    if (!nextBirthdayDate || !showCountdown) {
       return;
     }
 
@@ -82,6 +105,16 @@ const AgeCalculator = () => {
       
       if (diff <= 0) {
         setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        // Trigger birthday celebration
+        setShowBirthdayMessage(true);
+        setShowConfetti(true);
+        setShowCountdown(false);
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+          setShowBirthdayMessage(false);
+          setShowConfetti(false);
+        }, 3000);
         return;
       }
 
@@ -97,7 +130,7 @@ const AgeCalculator = () => {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [nextBirthdayDate]);
+  }, [nextBirthdayDate, showCountdown]);
 
   const calculateAge = () => {
     const birthDate = new Date(parseInt(year), parseInt(month), parseInt(day));
@@ -153,6 +186,20 @@ const AgeCalculator = () => {
     return new Date(parseInt(yearValue), parseInt(monthIndex) + 1, 0).getDate();
   };
 
+  const toggleCountdown = () => {
+    setShowCountdown(!showCountdown);
+    if (!showCountdown && nextBirthdayDate) {
+      // Initialize countdown when showing
+      const now = new Date();
+      const diff = nextBirthdayDate.getTime() - now.getTime();
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      setCountdown({ days, hours, minutes, seconds });
+    }
+  };
+
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 120 }, (_, i) => currentYear - i);
   const daysInMonth = getDaysInMonth(month, year || currentYear.toString());
@@ -161,7 +208,24 @@ const AgeCalculator = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen p-6 md:p-8">
+    <div className="min-h-screen p-6 md:p-8 relative">
+      {showConfetti && <Confetti show={showConfetti} />}
+      
+      {/* Birthday Message Overlay */}
+      {showBirthdayMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-fade-in">
+          <div className="text-center animate-scale-in">
+            <PartyPopper className="h-16 w-16 text-primary mx-auto mb-4 animate-bounce" />
+            <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2">
+              Happy Birthday!
+            </h1>
+            <p className="text-2xl md:text-3xl text-foreground font-semibold">
+              {username}
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-xl mx-auto">
         <header className="flex items-center justify-between mb-8">
           <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
@@ -260,8 +324,19 @@ const AgeCalculator = () => {
                   </div>
                 </div>
 
-                {countdown && (
-                  <div className="p-4 rounded-lg bg-primary/10 text-center">
+                {/* Birthday Countdown Toggle Button */}
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2"
+                  onClick={toggleCountdown}
+                >
+                  <Cake className="h-4 w-4" />
+                  {showCountdown ? "Hide Birthday Countdown" : "Show Birthday Countdown"}
+                </Button>
+
+                {/* Countdown Display */}
+                {showCountdown && countdown && (
+                  <div className="p-4 rounded-lg bg-primary/10 text-center animate-fade-in">
                     <div className="flex items-center justify-center gap-2 mb-3">
                       <Cake className="h-5 w-5 text-primary" />
                       <p className="text-sm font-medium text-primary">Next Birthday Countdown</p>
