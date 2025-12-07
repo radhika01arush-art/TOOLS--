@@ -32,8 +32,14 @@ const AgeCalculator = () => {
     totalHours: number;
     totalMinutes: number;
     totalSeconds: number;
-    nextBirthday: number;
   } | null>(null);
+  const [countdown, setCountdown] = useState<{
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  } | null>(null);
+  const [nextBirthdayDate, setNextBirthdayDate] = useState<Date | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -62,6 +68,36 @@ const AgeCalculator = () => {
       setResult(null);
     }
   }, [day, month, year]);
+
+  // Live countdown timer
+  useEffect(() => {
+    if (!nextBirthdayDate) {
+      setCountdown(null);
+      return;
+    }
+
+    const updateCountdown = () => {
+      const now = new Date();
+      const diff = nextBirthdayDate.getTime() - now.getTime();
+      
+      if (diff <= 0) {
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      setCountdown({ days, hours, minutes, seconds });
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, [nextBirthdayDate]);
 
   const calculateAge = () => {
     const birthDate = new Date(parseInt(year), parseInt(month), parseInt(day));
@@ -94,12 +130,12 @@ const AgeCalculator = () => {
     const totalMinutes = Math.floor(diffMs / (1000 * 60));
     const totalSeconds = Math.floor(diffMs / 1000);
 
-    // Calculate days until next birthday
+    // Calculate next birthday date
     let nextBirthday = new Date(today.getFullYear(), parseInt(month), parseInt(day));
     if (nextBirthday <= today) {
       nextBirthday = new Date(today.getFullYear() + 1, parseInt(month), parseInt(day));
     }
-    const daysUntilBirthday = Math.ceil((nextBirthday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    setNextBirthdayDate(nextBirthday);
 
     setResult({
       years,
@@ -109,7 +145,6 @@ const AgeCalculator = () => {
       totalHours,
       totalMinutes,
       totalSeconds,
-      nextBirthday: daysUntilBirthday,
     });
   };
 
@@ -225,15 +260,32 @@ const AgeCalculator = () => {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-lg bg-muted text-center">
-                  <div className="flex items-center justify-center gap-2 mb-1">
-                    <Cake className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">Next Birthday</p>
+                {countdown && (
+                  <div className="p-4 rounded-lg bg-primary/10 text-center">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <Cake className="h-5 w-5 text-primary" />
+                      <p className="text-sm font-medium text-primary">Next Birthday Countdown</p>
+                    </div>
+                    <div className="grid grid-cols-4 gap-2">
+                      <div className="p-2 rounded-lg bg-background">
+                        <p className="text-2xl font-bold text-foreground">{countdown.days}</p>
+                        <p className="text-xs text-muted-foreground">Days</p>
+                      </div>
+                      <div className="p-2 rounded-lg bg-background">
+                        <p className="text-2xl font-bold text-foreground">{countdown.hours}</p>
+                        <p className="text-xs text-muted-foreground">Hours</p>
+                      </div>
+                      <div className="p-2 rounded-lg bg-background">
+                        <p className="text-2xl font-bold text-foreground">{countdown.minutes}</p>
+                        <p className="text-xs text-muted-foreground">Minutes</p>
+                      </div>
+                      <div className="p-2 rounded-lg bg-background">
+                        <p className="text-2xl font-bold text-foreground">{countdown.seconds}</p>
+                        <p className="text-xs text-muted-foreground">Seconds</p>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-2xl font-bold text-foreground">
-                    {result.nextBirthday} days
-                  </p>
-                </div>
+                )}
               </div>
             )}
           </div>
