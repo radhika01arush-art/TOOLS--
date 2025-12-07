@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LogOut, Calculator, Percent, TrendingUp, Clock } from "lucide-react";
+import { LogOut, Calculator, Percent, TrendingUp, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -23,9 +23,9 @@ const tools = [
     path: "/profit-loss-calculator",
   },
   {
-    title: "Time Converter",
-    icon: Clock,
-    path: "/time-converter",
+    title: "Age Calculator",
+    icon: Calendar,
+    path: "/age-calculator",
   },
 ];
 
