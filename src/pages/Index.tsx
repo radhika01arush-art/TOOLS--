@@ -32,22 +32,27 @@ const tools = [
 const Index = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        navigate("/auth");
-      } else {
-        setUser(session.user);
-      }
-    });
-
+    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
-        navigate("/auth");
+        navigate("/auth", { replace: true });
       } else {
         setUser(session.user);
       }
+      setLoading(false);
+    });
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        navigate("/auth", { replace: true });
+      } else {
+        setUser(session.user);
+      }
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -57,6 +62,14 @@ const Index = () => {
     await supabase.auth.signOut();
     setUser(null);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6 md:p-8">
