@@ -13,7 +13,7 @@ import Leaderboard from "./pages/Leaderboard";
 import UnitConverter from "./pages/UnitConverter";
 import PercentageCalculator from "./pages/PercentageCalculator";
 import ProfitLossCalculator from "./pages/ProfitLossCalculator";
-import TimeConverter from "./pages/TimeConverter";
+import AgeCalculator from "./pages/AgeCalculator";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +30,7 @@ const App = () => (
           <Route path="/unit-converter" element={<UnitConverter />} />
           <Route path="/percentage-calculator" element={<PercentageCalculator />} />
           <Route path="/profit-loss-calculator" element={<ProfitLossCalculator />} />
-          <Route path="/time-converter" element={<TimeConverter />} />
+          <Route path="/age-calculator" element={<AgeCalculator />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
