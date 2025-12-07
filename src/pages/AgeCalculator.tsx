@@ -29,6 +29,9 @@ const AgeCalculator = () => {
     months: number;
     days: number;
     totalDays: number;
+    totalHours: number;
+    totalMinutes: number;
+    totalSeconds: number;
     nextBirthday: number;
   } | null>(null);
 
@@ -84,8 +87,12 @@ const AgeCalculator = () => {
       months += 12;
     }
 
-    // Calculate total days lived
-    const totalDays = Math.floor((today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
+    // Calculate totals
+    const diffMs = today.getTime() - birthDate.getTime();
+    const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const totalMinutes = Math.floor(diffMs / (1000 * 60));
+    const totalSeconds = Math.floor(diffMs / 1000);
 
     // Calculate days until next birthday
     let nextBirthday = new Date(today.getFullYear(), parseInt(month), parseInt(day));
@@ -99,6 +106,9 @@ const AgeCalculator = () => {
       months,
       days,
       totalDays,
+      totalHours,
+      totalMinutes,
+      totalSeconds,
       nextBirthday: daysUntilBirthday,
     });
   };
@@ -187,21 +197,42 @@ const AgeCalculator = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 rounded-lg bg-muted text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Total Days Lived</p>
-                    <p className="text-2xl font-bold text-foreground">
+                    <p className="text-sm text-muted-foreground mb-1">Total Days</p>
+                    <p className="text-xl font-bold text-foreground">
                       {result.totalDays.toLocaleString()}
                     </p>
                   </div>
 
                   <div className="p-4 rounded-lg bg-muted text-center">
-                    <div className="flex items-center justify-center gap-2 mb-1">
-                      <Cake className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm text-muted-foreground">Next Birthday</p>
-                    </div>
-                    <p className="text-2xl font-bold text-foreground">
-                      {result.nextBirthday} days
+                    <p className="text-sm text-muted-foreground mb-1">Total Hours</p>
+                    <p className="text-xl font-bold text-foreground">
+                      {result.totalHours.toLocaleString()}
                     </p>
                   </div>
+
+                  <div className="p-4 rounded-lg bg-muted text-center">
+                    <p className="text-sm text-muted-foreground mb-1">Total Minutes</p>
+                    <p className="text-xl font-bold text-foreground">
+                      {result.totalMinutes.toLocaleString()}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-muted text-center">
+                    <p className="text-sm text-muted-foreground mb-1">Total Seconds</p>
+                    <p className="text-xl font-bold text-foreground">
+                      {result.totalSeconds.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-lg bg-muted text-center">
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <Cake className="h-4 w-4 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground">Next Birthday</p>
+                  </div>
+                  <p className="text-2xl font-bold text-foreground">
+                    {result.nextBirthday} days
+                  </p>
                 </div>
               </div>
             )}
