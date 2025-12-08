@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, TrendingUp, TrendingDown, Calculator, DollarSign } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const ProfitLossCalculator = () => {
   const navigate = useNavigate();
@@ -72,249 +73,262 @@ const ProfitLossCalculator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <Button variant="ghost" onClick={() => navigate("/")} className="mb-4">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
+    <div className="min-h-screen">
+      {/* Decorative background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 left-1/4 w-80 h-80 bg-accent/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-20 w-64 h-64 bg-success/15 rounded-full blur-3xl" />
+      </div>
 
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold">Profit & Loss Calculator</h1>
-          <p className="text-muted-foreground">
-            Calculate profit, loss, margins, and pricing for your business
-          </p>
-        </div>
+      <div className="relative z-10 p-4">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="flex items-center justify-between">
+            <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <ThemeToggle />
+          </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
-              Financial Calculations
-            </CardTitle>
-            <CardDescription>
-              Choose the type of calculation you need
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="profit-loss" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
-                <TabsTrigger value="profit-loss">Profit/Loss</TabsTrigger>
-                <TabsTrigger value="selling-price">Selling Price</TabsTrigger>
-                <TabsTrigger value="cost-price">Cost Price</TabsTrigger>
-                <TabsTrigger value="markup-margin">Markup/Margin</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="profit-loss" className="space-y-4 mt-6">
-                <div className="text-center mb-4">
-                  <p className="text-sm text-muted-foreground">
-                    Calculate profit or loss from cost and selling price
-                  </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="cp1">Cost Price</Label>
-                    <Input
-                      id="cp1"
-                      type="number"
-                      placeholder="Enter cost price"
-                      value={costPrice1}
-                      onChange={(e) => setCostPrice1(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="sp1">Selling Price</Label>
-                    <Input
-                      id="sp1"
-                      type="number"
-                      placeholder="Enter selling price"
-                      value={sellingPrice1}
-                      onChange={(e) => setSellingPrice1(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <Button onClick={calculateProfitLoss} className="w-full">
-                  <Calculator className="mr-2 h-4 w-4" />
-                  Calculate
-                </Button>
-                {plResult && (
-                  <div className={`p-4 rounded-lg border ${plResult.type === "Profit" ? "bg-green-500/10 border-green-500/20" : "bg-red-500/10 border-red-500/20"}`}>
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      {plResult.type === "Profit" ? (
-                        <TrendingUp className="h-5 w-5 text-green-500" />
-                      ) : (
-                        <TrendingDown className="h-5 w-5 text-red-500" />
-                      )}
-                      <span className={`text-xl font-bold ${plResult.type === "Profit" ? "text-green-500" : "text-red-500"}`}>
-                        {plResult.type}
-                      </span>
-                    </div>
-                    <div className="text-center space-y-1">
-                      <p className="text-2xl font-bold">${plResult.amount.toFixed(2)}</p>
-                      <p className="text-muted-foreground">
-                        {plResult.percentage.toFixed(2)}% {plResult.type.toLowerCase()}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
-
-              <TabsContent value="selling-price" className="space-y-4 mt-6">
-                <div className="text-center mb-4">
-                  <p className="text-sm text-muted-foreground">
-                    Calculate selling price for a desired profit percentage
-                  </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="cp2">Cost Price</Label>
-                    <Input
-                      id="cp2"
-                      type="number"
-                      placeholder="Enter cost price"
-                      value={costPrice2}
-                      onChange={(e) => setCostPrice2(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="profit2">Desired Profit %</Label>
-                    <Input
-                      id="profit2"
-                      type="number"
-                      placeholder="Enter profit percentage"
-                      value={desiredProfit}
-                      onChange={(e) => setDesiredProfit(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <Button onClick={calculateSellingPrice} className="w-full">
-                  <Calculator className="mr-2 h-4 w-4" />
-                  Calculate Selling Price
-                </Button>
-                {spResult !== null && (
-                  <div className="p-4 rounded-lg border bg-primary/10 border-primary/20 text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Selling Price</p>
-                    <p className="text-3xl font-bold text-primary">${spResult.toFixed(2)}</p>
-                  </div>
-                )}
-              </TabsContent>
-
-              <TabsContent value="cost-price" className="space-y-4 mt-6">
-                <div className="text-center mb-4">
-                  <p className="text-sm text-muted-foreground">
-                    Calculate cost price from selling price and profit percentage
-                  </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="sp3">Selling Price</Label>
-                    <Input
-                      id="sp3"
-                      type="number"
-                      placeholder="Enter selling price"
-                      value={sellingPrice3}
-                      onChange={(e) => setSellingPrice3(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="profit3">Profit %</Label>
-                    <Input
-                      id="profit3"
-                      type="number"
-                      placeholder="Enter profit percentage"
-                      value={profitPercent3}
-                      onChange={(e) => setProfitPercent3(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <Button onClick={calculateCostPrice} className="w-full">
-                  <Calculator className="mr-2 h-4 w-4" />
-                  Calculate Cost Price
-                </Button>
-                {cpResult !== null && (
-                  <div className="p-4 rounded-lg border bg-primary/10 border-primary/20 text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Cost Price</p>
-                    <p className="text-3xl font-bold text-primary">${cpResult.toFixed(2)}</p>
-                  </div>
-                )}
-              </TabsContent>
-
-              <TabsContent value="markup-margin" className="space-y-4 mt-6">
-                <div className="text-center mb-4">
-                  <p className="text-sm text-muted-foreground">
-                    Convert markup percentage to profit margin
-                  </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="cost4">Cost Price</Label>
-                    <Input
-                      id="cost4"
-                      type="number"
-                      placeholder="Enter cost price"
-                      value={cost4}
-                      onChange={(e) => setCost4(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="markup4">Markup %</Label>
-                    <Input
-                      id="markup4"
-                      type="number"
-                      placeholder="Enter markup percentage"
-                      value={markup4}
-                      onChange={(e) => setMarkup4(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <Button onClick={calculateMarkupMargin} className="w-full">
-                  <Calculator className="mr-2 h-4 w-4" />
-                  Calculate
-                </Button>
-                {marginResult && (
-                  <div className="p-4 rounded-lg border bg-primary/10 border-primary/20">
-                    <div className="grid grid-cols-2 gap-4 text-center">
-                      <div>
-                        <p className="text-sm text-muted-foreground mb-1">Selling Price</p>
-                        <p className="text-2xl font-bold text-primary">${marginResult.sellingPrice.toFixed(2)}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground mb-1">Profit Margin</p>
-                        <p className="text-2xl font-bold text-primary">{marginResult.margin.toFixed(2)}%</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Reference</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <div className="p-3 rounded-lg bg-muted/50">
-                <p className="font-semibold mb-1">Profit Formula</p>
-                <p className="text-muted-foreground">Profit = Selling Price - Cost Price</p>
-              </div>
-              <div className="p-3 rounded-lg bg-muted/50">
-                <p className="font-semibold mb-1">Profit %</p>
-                <p className="text-muted-foreground">Profit % = (Profit / Cost Price) × 100</p>
-              </div>
-              <div className="p-3 rounded-lg bg-muted/50">
-                <p className="font-semibold mb-1">Markup vs Margin</p>
-                <p className="text-muted-foreground">Markup is % of cost, Margin is % of selling price</p>
-              </div>
-              <div className="p-3 rounded-lg bg-muted/50">
-                <p className="font-semibold mb-1">Break-Even</p>
-                <p className="text-muted-foreground">Break-even = When Selling Price = Cost Price</p>
-              </div>
+          <div className="text-center space-y-2">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-accent to-success mb-4">
+              <TrendingUp className="h-8 w-8 text-primary-foreground" />
             </div>
-          </CardContent>
-        </Card>
+            <h1 className="text-3xl font-bold">Profit & Loss Calculator</h1>
+            <p className="text-muted-foreground">
+              Calculate profit, loss, margins, and pricing for your business
+            </p>
+          </div>
+
+          <Card className="glass-card border-0">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <DollarSign className="h-5 w-5" />
+                Financial Calculations
+              </CardTitle>
+              <CardDescription>
+                Choose the type of calculation you need
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="profit-loss" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 bg-muted/50">
+                  <TabsTrigger value="profit-loss">Profit/Loss</TabsTrigger>
+                  <TabsTrigger value="selling-price">Selling Price</TabsTrigger>
+                  <TabsTrigger value="cost-price">Cost Price</TabsTrigger>
+                  <TabsTrigger value="markup-margin">Markup/Margin</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="profit-loss" className="space-y-4 mt-6">
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-muted-foreground">
+                      Calculate profit or loss from cost and selling price
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="cp1">Cost Price</Label>
+                      <Input
+                        id="cp1"
+                        type="number"
+                        placeholder="Enter cost price"
+                        value={costPrice1}
+                        onChange={(e) => setCostPrice1(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="sp1">Selling Price</Label>
+                      <Input
+                        id="sp1"
+                        type="number"
+                        placeholder="Enter selling price"
+                        value={sellingPrice1}
+                        onChange={(e) => setSellingPrice1(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <Button onClick={calculateProfitLoss} className="w-full">
+                    <Calculator className="mr-2 h-4 w-4" />
+                    Calculate
+                  </Button>
+                  {plResult && (
+                    <div className={`p-4 rounded-xl ${plResult.type === "Profit" ? "bg-success/10" : "bg-destructive/10"}`}>
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        {plResult.type === "Profit" ? (
+                          <TrendingUp className="h-5 w-5 text-success" />
+                        ) : (
+                          <TrendingDown className="h-5 w-5 text-destructive" />
+                        )}
+                        <span className={`text-xl font-bold ${plResult.type === "Profit" ? "text-success" : "text-destructive"}`}>
+                          {plResult.type}
+                        </span>
+                      </div>
+                      <div className="text-center space-y-1">
+                        <p className="text-2xl font-bold">${plResult.amount.toFixed(2)}</p>
+                        <p className="text-muted-foreground">
+                          {plResult.percentage.toFixed(2)}% {plResult.type.toLowerCase()}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="selling-price" className="space-y-4 mt-6">
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-muted-foreground">
+                      Calculate selling price for a desired profit percentage
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="cp2">Cost Price</Label>
+                      <Input
+                        id="cp2"
+                        type="number"
+                        placeholder="Enter cost price"
+                        value={costPrice2}
+                        onChange={(e) => setCostPrice2(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="profit2">Desired Profit %</Label>
+                      <Input
+                        id="profit2"
+                        type="number"
+                        placeholder="Enter profit percentage"
+                        value={desiredProfit}
+                        onChange={(e) => setDesiredProfit(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <Button onClick={calculateSellingPrice} className="w-full">
+                    <Calculator className="mr-2 h-4 w-4" />
+                    Calculate Selling Price
+                  </Button>
+                  {spResult !== null && (
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Selling Price</p>
+                      <p className="text-3xl font-bold gradient-text">${spResult.toFixed(2)}</p>
+                    </div>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="cost-price" className="space-y-4 mt-6">
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-muted-foreground">
+                      Calculate cost price from selling price and profit percentage
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="sp3">Selling Price</Label>
+                      <Input
+                        id="sp3"
+                        type="number"
+                        placeholder="Enter selling price"
+                        value={sellingPrice3}
+                        onChange={(e) => setSellingPrice3(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="profit3">Profit %</Label>
+                      <Input
+                        id="profit3"
+                        type="number"
+                        placeholder="Enter profit percentage"
+                        value={profitPercent3}
+                        onChange={(e) => setProfitPercent3(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <Button onClick={calculateCostPrice} className="w-full">
+                    <Calculator className="mr-2 h-4 w-4" />
+                    Calculate Cost Price
+                  </Button>
+                  {cpResult !== null && (
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Cost Price</p>
+                      <p className="text-3xl font-bold gradient-text">${cpResult.toFixed(2)}</p>
+                    </div>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="markup-margin" className="space-y-4 mt-6">
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-muted-foreground">
+                      Convert markup percentage to profit margin
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="cost4">Cost Price</Label>
+                      <Input
+                        id="cost4"
+                        type="number"
+                        placeholder="Enter cost price"
+                        value={cost4}
+                        onChange={(e) => setCost4(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="markup4">Markup %</Label>
+                      <Input
+                        id="markup4"
+                        type="number"
+                        placeholder="Enter markup percentage"
+                        value={markup4}
+                        onChange={(e) => setMarkup4(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <Button onClick={calculateMarkupMargin} className="w-full">
+                    <Calculator className="mr-2 h-4 w-4" />
+                    Calculate
+                  </Button>
+                  {marginResult && (
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
+                      <div className="grid grid-cols-2 gap-4 text-center">
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Selling Price</p>
+                          <p className="text-2xl font-bold gradient-text">${marginResult.sellingPrice.toFixed(2)}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Profit Margin</p>
+                          <p className="text-2xl font-bold gradient-text">{marginResult.margin.toFixed(2)}%</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+
+          <Card className="glass-card border-0">
+            <CardHeader>
+              <CardTitle>Quick Reference</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="p-3 rounded-xl bg-muted/50">
+                  <p className="font-semibold mb-1">Profit Formula</p>
+                  <p className="text-muted-foreground">Profit = Selling Price - Cost Price</p>
+                </div>
+                <div className="p-3 rounded-xl bg-muted/50">
+                  <p className="font-semibold mb-1">Profit %</p>
+                  <p className="text-muted-foreground">Profit % = (Profit / Cost Price) × 100</p>
+                </div>
+                <div className="p-3 rounded-xl bg-muted/50">
+                  <p className="font-semibold mb-1">Markup vs Margin</p>
+                  <p className="text-muted-foreground">Markup is % of cost, Margin is % of selling price</p>
+                </div>
+                <div className="p-3 rounded-xl bg-muted/50">
+                  <p className="font-semibold mb-1">Break-Even</p>
+                  <p className="text-muted-foreground">Break-even = When Selling Price = Cost Price</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

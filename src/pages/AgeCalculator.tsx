@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Cake, PartyPopper } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft, Cake, PartyPopper, Calendar } from "lucide-react";
 import { Confetti } from "@/components/Confetti";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   Select,
   SelectContent,
@@ -21,8 +21,6 @@ const months = [
 
 const AgeCalculator = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
-  const [username, setUsername] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -45,45 +43,6 @@ const AgeCalculator = () => {
   const [showCountdown, setShowCountdown] = useState(false);
   const [showBirthdayMessage, setShowBirthdayMessage] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        navigate("/auth");
-      } else {
-        setUser(session.user);
-        // Get username from profile or email
-        fetchUsername(session.user.id, session.user.email);
-      }
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) {
-        navigate("/auth");
-      } else {
-        setUser(session.user);
-        fetchUsername(session.user.id, session.user.email);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  const fetchUsername = async (userId: string, email: string | undefined) => {
-    const { data } = await supabase
-      .from("profiles")
-      .select("username")
-      .eq("id", userId)
-      .single();
-    
-    if (data?.username) {
-      setUsername(data.username);
-    } else if (email) {
-      setUsername(email.split("@")[0]);
-    } else {
-      setUsername("Friend");
-    }
-  };
 
   useEffect(() => {
     if (day && month && year) {
@@ -212,11 +171,15 @@ const AgeCalculator = () => {
   const daysInMonth = getDaysInMonth(month, year || currentYear.toString());
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-  if (!user) return null;
-
   return (
-    <div className="min-h-screen p-6 md:p-8 relative">
+    <div className="min-h-screen relative">
       {showConfetti && <Confetti show={showConfetti} />}
+      
+      {/* Decorative background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -left-20 w-64 h-64 bg-accent/15 rounded-full blur-3xl" />
+      </div>
       
       {/* Birthday Message Overlay */}
       {showBirthdayMessage && (
@@ -227,151 +190,163 @@ const AgeCalculator = () => {
               Happy Birthday!
             </h1>
             <p className="text-2xl md:text-3xl text-foreground font-semibold">
-              {username}
+              🎉 Celebrate! 🎉
             </p>
           </div>
         </div>
       )}
 
-      <div className="max-w-xl mx-auto">
-        <header className="flex items-center justify-between mb-8">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-        </header>
+      <div className="relative z-10 p-6 md:p-8">
+        <div className="max-w-xl mx-auto">
+          <header className="flex items-center justify-between mb-8">
+            <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <ThemeToggle />
+          </header>
 
-        <Card className="p-6">
-          <div className="space-y-6">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Day</Label>
-                <Select value={day} onValueChange={setDay}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Day" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {daysArray.map((d) => (
-                      <SelectItem key={d} value={d.toString()}>
-                        {d}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Month</Label>
-                <Select value={month} onValueChange={setMonth}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Month" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {months.map((m, i) => (
-                      <SelectItem key={m} value={i.toString()}>
-                        {m}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Year</Label>
-                <Select value={year} onValueChange={setYear}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {years.map((y) => (
-                      <SelectItem key={y} value={y.toString()}>
-                        {y}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+          {/* Title */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary mb-4">
+              <Calendar className="h-8 w-8 text-primary-foreground" />
             </div>
-
-            {result && (
-              <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-primary/10 text-center">
-                  <p className="text-sm text-muted-foreground mb-1">Your Age</p>
-                  <p className="text-3xl font-bold text-primary">
-                    {result.years} years, {result.months} months, {result.days} days
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg bg-muted text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Total Days</p>
-                    <p className="text-xl font-bold text-foreground">
-                      {result.totalDays.toLocaleString()}
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-muted text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Total Hours</p>
-                    <p className="text-xl font-bold text-foreground">
-                      {result.totalHours.toLocaleString()}
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-muted text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Total Minutes</p>
-                    <p className="text-xl font-bold text-foreground">
-                      {result.totalMinutes.toLocaleString()}
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-muted text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Total Seconds</p>
-                    <p className="text-xl font-bold text-foreground">
-                      {result.totalSeconds.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Birthday Countdown Toggle Button */}
-                <Button 
-                  variant="outline" 
-                  className="w-full gap-2"
-                  onClick={toggleCountdown}
-                >
-                  <Cake className="h-4 w-4" />
-                  {showCountdown ? "Hide Birthday Countdown" : "Show Birthday Countdown"}
-                </Button>
-
-                {/* Countdown Display */}
-                {showCountdown && countdown && (
-                  <div className="p-4 rounded-lg bg-primary/10 text-center animate-fade-in">
-                    <div className="flex items-center justify-center gap-2 mb-3">
-                      <Cake className="h-5 w-5 text-primary" />
-                      <p className="text-sm font-medium text-primary">Next Birthday Countdown</p>
-                    </div>
-                    <div className="grid grid-cols-4 gap-2">
-                      <div className="p-2 rounded-lg bg-background">
-                        <p className="text-2xl font-bold text-foreground">{countdown.days}</p>
-                        <p className="text-xs text-muted-foreground">Days</p>
-                      </div>
-                      <div className="p-2 rounded-lg bg-background">
-                        <p className="text-2xl font-bold text-foreground">{countdown.hours}</p>
-                        <p className="text-xs text-muted-foreground">Hours</p>
-                      </div>
-                      <div className="p-2 rounded-lg bg-background">
-                        <p className="text-2xl font-bold text-foreground">{countdown.minutes}</p>
-                        <p className="text-xs text-muted-foreground">Minutes</p>
-                      </div>
-                      <div className="p-2 rounded-lg bg-background">
-                        <p className="text-2xl font-bold text-foreground">{countdown.seconds}</p>
-                        <p className="text-xs text-muted-foreground">Seconds</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+            <h1 className="text-3xl font-bold mb-2">Age Calculator</h1>
+            <p className="text-muted-foreground">Discover exactly how long you've been alive</p>
           </div>
-        </Card>
+
+          <Card className="glass-card p-6 border-0">
+            <div className="space-y-6">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label>Day</Label>
+                  <Select value={day} onValueChange={setDay}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Day" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {daysArray.map((d) => (
+                        <SelectItem key={d} value={d.toString()}>
+                          {d}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Month</Label>
+                  <Select value={month} onValueChange={setMonth}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {months.map((m, i) => (
+                        <SelectItem key={m} value={i.toString()}>
+                          {m}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Year</Label>
+                  <Select value={year} onValueChange={setYear}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {years.map((y) => (
+                        <SelectItem key={y} value={y.toString()}>
+                          {y}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {result && (
+                <div className="space-y-4 fade-up">
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-center">
+                    <p className="text-sm text-muted-foreground mb-1">Your Age</p>
+                    <p className="text-3xl font-bold gradient-text">
+                      {result.years} years, {result.months} months, {result.days} days
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 rounded-xl bg-muted/50 text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Total Days</p>
+                      <p className="text-xl font-bold text-foreground">
+                        {result.totalDays.toLocaleString()}
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-muted/50 text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Total Hours</p>
+                      <p className="text-xl font-bold text-foreground">
+                        {result.totalHours.toLocaleString()}
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-muted/50 text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Total Minutes</p>
+                      <p className="text-xl font-bold text-foreground">
+                        {result.totalMinutes.toLocaleString()}
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-muted/50 text-center">
+                      <p className="text-sm text-muted-foreground mb-1">Total Seconds</p>
+                      <p className="text-xl font-bold text-foreground">
+                        {result.totalSeconds.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Birthday Countdown Toggle Button */}
+                  <Button 
+                    variant="outline" 
+                    className="w-full gap-2"
+                    onClick={toggleCountdown}
+                  >
+                    <Cake className="h-4 w-4" />
+                    {showCountdown ? "Hide Birthday Countdown" : "Show Birthday Countdown"}
+                  </Button>
+
+                  {/* Countdown Display */}
+                  {showCountdown && countdown && (
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 text-center animate-fade-in">
+                      <div className="flex items-center justify-center gap-2 mb-3">
+                        <Cake className="h-5 w-5 text-primary" />
+                        <p className="text-sm font-medium text-primary">Next Birthday Countdown</p>
+                      </div>
+                      <div className="grid grid-cols-4 gap-2">
+                        <div className="p-2 rounded-lg bg-background/80">
+                          <p className="text-2xl font-bold text-foreground">{countdown.days}</p>
+                          <p className="text-xs text-muted-foreground">Days</p>
+                        </div>
+                        <div className="p-2 rounded-lg bg-background/80">
+                          <p className="text-2xl font-bold text-foreground">{countdown.hours}</p>
+                          <p className="text-xs text-muted-foreground">Hours</p>
+                        </div>
+                        <div className="p-2 rounded-lg bg-background/80">
+                          <p className="text-2xl font-bold text-foreground">{countdown.minutes}</p>
+                          <p className="text-xs text-muted-foreground">Minutes</p>
+                        </div>
+                        <div className="p-2 rounded-lg bg-background/80">
+                          <p className="text-2xl font-bold text-foreground">{countdown.seconds}</p>
+                          <p className="text-xs text-muted-foreground">Seconds</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   );

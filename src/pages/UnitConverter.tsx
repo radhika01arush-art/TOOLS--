@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ArrowLeftRight, Calculator } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowLeftRight, Calculator, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -99,6 +99,7 @@ const unitLabels: Record<string, string> = {
 };
 
 const UnitConverter = () => {
+  const navigate = useNavigate();
   const [category, setCategory] = useState<ConversionCategory>("length");
   const [fromUnit, setFromUnit] = useState<string>("meter");
   const [toUnit, setToUnit] = useState<string>("foot");
@@ -158,29 +159,29 @@ const UnitConverter = () => {
   const categoryUnits = Object.keys(conversions[category]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen">
+      {/* Decorative background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-20 w-64 h-64 bg-accent/15 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Link to="/">
-            <Button variant="outline" size="sm">
-              ← Back
-            </Button>
-          </Link>
+          <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
           <ThemeToggle />
         </div>
 
         {/* Title */}
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Calculator className="h-10 w-10 text-primary" />
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-              Unit Converter
-            </h1>
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent mb-4">
+            <Calculator className="h-8 w-8 text-primary-foreground" />
           </div>
-          <p className="text-lg text-muted-foreground">
-            Fast and accurate conversions for everyday use
-          </p>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">Unit Converter</h1>
+          <p className="text-muted-foreground">Fast and accurate conversions for everyday use</p>
         </div>
 
         {/* Category Tabs */}
@@ -188,14 +189,14 @@ const UnitConverter = () => {
           <TabsList className="grid grid-cols-3 md:grid-cols-6 w-full h-auto gap-2 bg-muted/50 p-2">
             <TabsTrigger value="length" className="font-semibold">Length</TabsTrigger>
             <TabsTrigger value="weight" className="font-semibold">Weight</TabsTrigger>
-            <TabsTrigger value="temperature" className="font-semibold">Temperature</TabsTrigger>
+            <TabsTrigger value="temperature" className="font-semibold">Temp</TabsTrigger>
             <TabsTrigger value="volume" className="font-semibold">Volume</TabsTrigger>
             <TabsTrigger value="speed" className="font-semibold">Speed</TabsTrigger>
             <TabsTrigger value="area" className="font-semibold">Area</TabsTrigger>
           </TabsList>
 
           <TabsContent value={category} className="mt-8">
-            <Card className="border-2">
+            <Card className="glass-card border-0">
               <CardHeader>
                 <CardTitle className="text-2xl font-bold text-center capitalize">
                   {category} Conversion
