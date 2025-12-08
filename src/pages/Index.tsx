@@ -6,28 +6,24 @@ import { Card } from "@/components/ui/card";
 const tools = [
   {
     title: "Unit Converter",
-    description: "Convert between units instantly",
     icon: Calculator,
     path: "/unit-converter",
     gradient: "from-primary to-accent",
   },
   {
     title: "Percentage Calculator",
-    description: "Calculate percentages easily",
     icon: Percent,
     path: "/percentage-calculator",
     gradient: "from-secondary to-primary",
   },
   {
     title: "Profit & Loss",
-    description: "Track your business finances",
     icon: TrendingUp,
     path: "/profit-loss-calculator",
     gradient: "from-accent to-success",
   },
   {
     title: "Age Calculator",
-    description: "Discover your exact age",
     icon: Calendar,
     path: "/age-calculator",
     gradient: "from-primary to-secondary",
@@ -59,20 +55,8 @@ const Index = () => {
             <ThemeToggle />
           </header>
 
-          {/* Hero Section */}
-          <div className="text-center mb-16 fade-up">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-              <span className="gradient-text">Essential Tools</span>
-              <br />
-              <span className="text-foreground">for Everyday Life</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Fast, beautiful, and intuitive calculators designed to simplify your daily tasks
-            </p>
-          </div>
-
           {/* Tools Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
             {tools.map((tool, index) => (
               <Card
                 key={tool.path}
@@ -87,21 +71,11 @@ const Index = () => {
                   <div className={`p-4 rounded-2xl bg-gradient-to-br ${tool.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <tool.icon className="h-8 w-8 text-primary-foreground" />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-foreground mb-1">{tool.title}</h3>
-                    <p className="text-sm text-muted-foreground">{tool.description}</p>
-                  </div>
+                  <h3 className="font-bold text-foreground">{tool.title}</h3>
                 </div>
               </Card>
             ))}
           </div>
-
-          {/* Footer */}
-          <footer className="mt-20 text-center">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Daily Tools • Built with care
-            </p>
-          </footer>
         </div>
       </div>
     </div>
