@@ -11,6 +11,7 @@ import UnitConverter from "./pages/UnitConverter";
 import PercentageCalculator from "./pages/PercentageCalculator";
 import ProfitLossCalculator from "./pages/ProfitLossCalculator";
 import AgeCalculator from "./pages/AgeCalculator";
+import BMICalculator from "./pages/BMICalculator";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/percentage-calculator" element={<PercentageCalculator />} />
           <Route path="/profit-loss-calculator" element={<ProfitLossCalculator />} />
           <Route path="/age-calculator" element={<AgeCalculator />} />
+          <Route path="/bmi-calculator" element={<BMICalculator />} />
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

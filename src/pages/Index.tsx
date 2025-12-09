@@ -1,5 +1,5 @@
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Calculator, Percent, TrendingUp, Calendar, Sparkles } from "lucide-react";
+import { Calculator, Percent, TrendingUp, Calendar, Scale, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 
@@ -27,6 +27,12 @@ const tools = [
     icon: Calendar,
     path: "/age-calculator",
     gradient: "from-primary to-secondary",
+  },
+  {
+    title: "BMI Calculator",
+    icon: Scale,
+    path: "/bmi-calculator",
+    gradient: "from-success to-accent",
   },
 ];
 
