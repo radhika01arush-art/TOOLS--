@@ -107,10 +107,18 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    color-scheme: dark;
+  }
+
   body {
-    @apply bg-background text-foreground transition-colors duration-500;
+    @apply bg-background text-foreground;
     background: var(--gradient-background);
     background-attachment: fixed;
+  }
+  
+  :root {
+    color-scheme: dark;
   }
 }
 
