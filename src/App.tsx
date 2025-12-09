@@ -12,6 +12,7 @@ import PercentageCalculator from "./pages/PercentageCalculator";
 import ProfitLossCalculator from "./pages/ProfitLossCalculator";
 import AgeCalculator from "./pages/AgeCalculator";
 import BMICalculator from "./pages/BMICalculator";
+import BasicCalculator from "./pages/BasicCalculator";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
       <HashRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/calculator" element={<BasicCalculator />} />
           <Route path="/unit-converter" element={<UnitConverter />} />
           <Route path="/percentage-calculator" element={<PercentageCalculator />} />
           <Route path="/profit-loss-calculator" element={<ProfitLossCalculator />} />

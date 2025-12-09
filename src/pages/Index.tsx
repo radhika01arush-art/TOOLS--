@@ -1,9 +1,14 @@
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { Calculator, Percent, TrendingUp, Calendar, Scale, Sparkles } from "lucide-react";
+import { Calculator, Percent, TrendingUp, Calendar, Scale, Sparkles, Equal } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 
 const tools = [
+  {
+    title: "Calculator",
+    icon: Equal,
+    path: "/calculator",
+    gradient: "from-accent to-primary",
+  },
   {
     title: "Unit Converter",
     icon: Calculator,
@@ -51,14 +56,13 @@ const Index = () => {
       <div className="relative z-10 p-6 md:p-8 lg:p-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <header className="flex items-center justify-between mb-16">
+          <header className="flex items-center justify-center mb-16">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-xl bg-primary/10">
                 <Sparkles className="h-6 w-6 text-primary" />
               </div>
               <span className="text-xl font-bold gradient-text">Daily Tools</span>
             </div>
-            <ThemeToggle />
           </header>
 
           {/* Tools Grid */}
