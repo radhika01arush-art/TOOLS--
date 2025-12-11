@@ -213,34 +213,34 @@ const AgeCalculator = () => {
         </div>
       )}
 
-      <div className="relative z-10 p-6 md:p-8">
+      <div className="relative z-10 p-4 sm:p-6 md:p-8">
         <div className="max-w-xl mx-auto">
-          <header className="flex items-center justify-start mb-8">
+          <header className="flex items-center justify-start mb-4 sm:mb-8">
             <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </header>
 
           {/* Title */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary mb-4">
-              <Calendar className="h-8 w-8 text-primary-foreground" />
+          <div className="text-center mb-4 sm:mb-8">
+            <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary mb-3 sm:mb-4">
+              <Calendar className="h-6 w-6 sm:h-8 sm:w-8 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">
               <RainbowText text="Age Calculator" />
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-xs sm:text-base text-muted-foreground">
               <RainbowText text="Discover exactly how long you've been alive" />
             </p>
           </div>
 
-          <Card className="glass-card p-6 border-0">
+          <Card className="glass-card p-4 sm:p-6 border-0">
             <div className="space-y-6">
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label>Day</Label>
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                <div className="space-y-1 sm:space-y-2">
+                  <Label className="text-xs sm:text-sm">Day</Label>
                   <Select value={day} onValueChange={setDay}>
-                    <SelectTrigger>
+                    <SelectTrigger className="text-xs sm:text-sm">
                       <SelectValue placeholder="Day" />
                     </SelectTrigger>
                     <SelectContent>
@@ -253,11 +253,11 @@ const AgeCalculator = () => {
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label>Month</Label>
+                <div className="space-y-1 sm:space-y-2">
+                  <Label className="text-xs sm:text-sm">Month</Label>
                   <Select value={month} onValueChange={setMonth}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Month" />
+                    <SelectTrigger className="text-xs sm:text-sm">
+                      <SelectValue placeholder="Mon" />
                     </SelectTrigger>
                     <SelectContent>
                       {months.map((m, i) => (
@@ -269,10 +269,10 @@ const AgeCalculator = () => {
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label>Year</Label>
+                <div className="space-y-1 sm:space-y-2">
+                  <Label className="text-xs sm:text-sm">Year</Label>
                   <Select value={year} onValueChange={setYear}>
-                    <SelectTrigger>
+                    <SelectTrigger className="text-xs sm:text-sm">
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
                     <SelectContent>
@@ -300,24 +300,24 @@ const AgeCalculator = () => {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="p-4 rounded-xl bg-muted/50 text-center">
-                      <p className="text-sm mb-1"><span className="text-colorful-primary">Total Days</span></p>
-                      <p className="text-xl font-bold">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="p-3 rounded-xl bg-muted/50 text-center">
+                      <p className="text-xs sm:text-sm mb-1"><span className="text-colorful-primary">Total Days</span></p>
+                      <p className="text-lg sm:text-xl font-bold">
                         <RainbowNumber value={result.totalDays.toLocaleString()} />
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-muted/50 text-center">
-                      <p className="text-sm mb-1"><span className="text-colorful-secondary">Total Hours</span></p>
-                      <p className="text-xl font-bold">
+                    <div className="p-3 rounded-xl bg-muted/50 text-center">
+                      <p className="text-xs sm:text-sm mb-1"><span className="text-colorful-secondary">Total Hours</span></p>
+                      <p className="text-lg sm:text-xl font-bold">
                         <RainbowNumber value={result.totalHours.toLocaleString()} />
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-muted/50 text-center">
-                      <p className="text-sm mb-1"><span className="text-colorful-accent">Total Minutes</span></p>
-                      <p className="text-xl font-bold">
+                    <div className="p-3 rounded-xl bg-muted/50 text-center">
+                      <p className="text-xs sm:text-sm mb-1"><span className="text-colorful-accent">Total Minutes</span></p>
+                      <p className="text-lg sm:text-xl font-bold">
                         <RainbowNumber value={result.totalMinutes.toLocaleString()} />
                       </p>
                     </div>
@@ -325,32 +325,32 @@ const AgeCalculator = () => {
 
                   {/* Birthday Countdown - Always Visible */}
                   {countdown && (
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 text-center animate-fade-in">
+                    <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 text-center animate-fade-in">
                       <div className="flex items-center justify-center gap-2 mb-3">
-                        <Cake className="h-5 w-5 text-colorful-pink" />
-                        <p className="text-sm font-medium text-colorful-pink">Next Birthday Countdown</p>
+                        <Cake className="h-4 w-4 sm:h-5 sm:w-5 text-colorful-pink" />
+                        <p className="text-xs sm:text-sm font-medium text-colorful-pink">Next Birthday Countdown</p>
                       </div>
-                      <div className="grid grid-cols-5 gap-2">
-                        <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold"><RainbowNumber value={countdown.days} /></p>
-                          <p className="text-xs text-colorful-primary">Days</p>
+                      <div className="grid grid-cols-4 gap-1 sm:gap-2 mb-3">
+                        <div className="p-1.5 sm:p-2 rounded-lg bg-background/80">
+                          <p className="text-lg sm:text-2xl font-bold"><RainbowNumber value={countdown.days} /></p>
+                          <p className="text-[10px] sm:text-xs text-colorful-primary">Days</p>
                         </div>
-                        <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold"><RainbowNumber value={countdown.hours} /></p>
-                          <p className="text-xs text-colorful-secondary">Hours</p>
+                        <div className="p-1.5 sm:p-2 rounded-lg bg-background/80">
+                          <p className="text-lg sm:text-2xl font-bold"><RainbowNumber value={countdown.hours} /></p>
+                          <p className="text-[10px] sm:text-xs text-colorful-secondary">Hours</p>
                         </div>
-                        <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold"><RainbowNumber value={countdown.minutes} /></p>
-                          <p className="text-xs text-colorful-accent">Mins</p>
+                        <div className="p-1.5 sm:p-2 rounded-lg bg-background/80">
+                          <p className="text-lg sm:text-2xl font-bold"><RainbowNumber value={countdown.minutes} /></p>
+                          <p className="text-[10px] sm:text-xs text-colorful-accent">Mins</p>
                         </div>
-                        <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold"><RainbowNumber value={countdown.seconds} /></p>
-                          <p className="text-xs text-colorful-success">Secs</p>
+                        <div className="p-1.5 sm:p-2 rounded-lg bg-background/80">
+                          <p className="text-lg sm:text-2xl font-bold"><RainbowNumber value={countdown.seconds} /></p>
+                          <p className="text-[10px] sm:text-xs text-colorful-success">Secs</p>
                         </div>
-                        <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-lg font-bold"><RainbowNumber value={countdown.totalMinutes.toLocaleString()} /></p>
-                          <p className="text-xs text-colorful-purple">Total Mins</p>
-                        </div>
+                      </div>
+                      <div className="p-2 rounded-lg bg-background/80">
+                        <p className="text-sm sm:text-lg font-bold"><RainbowNumber value={countdown.totalMinutes.toLocaleString()} /></p>
+                        <p className="text-[10px] sm:text-xs text-colorful-purple">Total Minutes Until Birthday</p>
                       </div>
                     </div>
                   )}
