@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { RainbowText, RainbowNumber } from "@/components/RainbowText";
 
 const PercentageCalculator = () => {
   const navigate = useNavigate();
@@ -61,8 +62,8 @@ const PercentageCalculator = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary to-primary mb-4">
               <Percent className="h-8 w-8 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold mb-2">Percentage Calculator</h1>
-            <p className="text-muted-foreground">Calculate percentages quickly and easily</p>
+            <h1 className="text-3xl font-bold mb-2"><RainbowText text="Percentage Calculator" /></h1>
+            <p className="text-muted-foreground"><RainbowText text="Calculate percentages quickly and easily" /></p>
           </div>
 
           <Tabs defaultValue="percent-of" className="w-full">
@@ -103,8 +104,8 @@ const PercentageCalculator = () => {
                     </div>
                   </div>
                   <div className="p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Result</p>
-                    <p className="text-3xl font-bold gradient-text">{formatNumber(percentOfResult)}</p>
+                    <p className="text-sm mb-1"><RainbowText text="Result" /></p>
+                    <p className="text-3xl font-bold"><RainbowNumber value={formatNumber(percentOfResult)} /></p>
                   </div>
                 </CardContent>
               </Card>
@@ -140,9 +141,9 @@ const PercentageCalculator = () => {
                     </div>
                   </div>
                   <div className="p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Result</p>
-                    <p className="text-3xl font-bold gradient-text">
-                      {whatPercentResult !== null ? `${formatNumber(whatPercentResult)}%` : "—"}
+                    <p className="text-sm mb-1"><RainbowText text="Result" /></p>
+                    <p className="text-3xl font-bold">
+                      {whatPercentResult !== null ? <><RainbowNumber value={formatNumber(whatPercentResult)} /><span className="text-colorful-accent">%</span></> : "—"}
                     </p>
                   </div>
                 </CardContent>
@@ -179,9 +180,9 @@ const PercentageCalculator = () => {
                     </div>
                   </div>
                   <div className="p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Change</p>
-                    <p className={`text-3xl font-bold ${changeResult !== null ? (changeResult >= 0 ? 'text-success' : 'text-destructive') : 'gradient-text'}`}>
-                      {changeResult !== null ? `${changeResult >= 0 ? '+' : ''}${formatNumber(changeResult)}%` : "—"}
+                    <p className="text-sm mb-1"><RainbowText text="Change" /></p>
+                    <p className={`text-3xl font-bold ${changeResult !== null ? (changeResult >= 0 ? 'text-colorful-success' : 'text-destructive') : ''}`}>
+                      {changeResult !== null ? <><span>{changeResult >= 0 ? '+' : ''}</span><RainbowNumber value={formatNumber(changeResult)} /><span className="text-colorful-accent">%</span></> : "—"}
                     </p>
                   </div>
                 </CardContent>
@@ -219,8 +220,8 @@ const PercentageCalculator = () => {
                   </div>
                   <p className="text-xs text-muted-foreground">Use negative numbers for decrease (e.g., -20 for 20% decrease)</p>
                   <div className="p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Result</p>
-                    <p className="text-3xl font-bold gradient-text">{formatNumber(adjustByResult)}</p>
+                    <p className="text-sm mb-1"><RainbowText text="Result" /></p>
+                    <p className="text-3xl font-bold"><RainbowNumber value={formatNumber(adjustByResult)} /></p>
                   </div>
                 </CardContent>
               </Card>

@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RainbowText, RainbowNumber } from "@/components/RainbowText";
 
 const BMICalculator = () => {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const BMICalculator = () => {
               <div className="p-2 rounded-xl bg-primary/10">
                 <Scale className="h-6 w-6 text-primary" />
               </div>
-              <span className="text-xl font-bold gradient-text">BMI Calculator</span>
+              <span className="text-xl font-bold"><RainbowText text="BMI Calculator" /></span>
             </div>
             <div className="w-10" /> {/* Spacer for alignment */}
           </header>
@@ -134,21 +135,21 @@ const BMICalculator = () => {
 
             {/* Result */}
             <div className="mt-8 text-center">
-              <div className="text-5xl font-bold gradient-text mb-2">
-                {bmi > 0 ? bmi.toFixed(1) : "—"}
+              <div className="text-5xl font-bold mb-2">
+                {bmi > 0 ? <RainbowNumber value={bmi.toFixed(1)} /> : "—"}
               </div>
               <div className={`text-lg font-medium ${category.color}`}>
-                {category.label}
+                <RainbowText text={category.label} />
               </div>
             </div>
 
             {/* BMI Scale */}
             <div className="mt-6 space-y-2">
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Underweight</span>
-                <span>Normal</span>
-                <span>Overweight</span>
-                <span>Obese</span>
+              <div className="flex justify-between text-xs">
+                <span className="text-colorful-primary">Underweight</span>
+                <span className="text-colorful-success">Normal</span>
+                <span className="text-colorful-accent">Overweight</span>
+                <span className="text-colorful-pink">Obese</span>
               </div>
               <div className="h-2 rounded-full bg-gradient-to-r from-blue-500 via-green-500 via-yellow-500 to-red-500" />
               <div className="flex justify-between text-xs text-muted-foreground">

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RainbowText, RainbowNumber } from "@/components/RainbowText";
 
 type ConversionCategory = "length" | "weight" | "temperature" | "volume" | "speed" | "area";
 
@@ -178,8 +179,8 @@ const UnitConverter = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent mb-4">
             <Calculator className="h-8 w-8 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Unit Converter</h1>
-          <p className="text-muted-foreground">Fast and accurate conversions for everyday use</p>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2"><RainbowText text="Unit Converter" /></h1>
+          <p className="text-muted-foreground"><RainbowText text="Fast and accurate conversions for everyday use" /></p>
         </div>
 
         {/* Category Tabs */}
@@ -197,7 +198,7 @@ const UnitConverter = () => {
             <Card className="glass-card border-0">
               <CardHeader>
                 <CardTitle className="text-2xl font-bold text-center capitalize">
-                  {category} Conversion
+                  <RainbowText text={`${category} Conversion`} />
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
