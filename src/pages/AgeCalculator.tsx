@@ -38,6 +38,7 @@ const AgeCalculator = () => {
     hours: number;
     minutes: number;
     seconds: number;
+    totalMinutes: number;
   } | null>(null);
   const [nextBirthdayDate, setNextBirthdayDate] = useState<Date | null>(null);
   const [showCountdown, setShowCountdown] = useState(true);
@@ -91,7 +92,7 @@ const AgeCalculator = () => {
       const diff = nextBirthdayDate.getTime() - now.getTime();
       
       if (diff <= 0) {
-        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0, totalMinutes: 0 });
         // Trigger birthday celebration
         setShowBirthdayMessage(true);
         setShowConfetti(true);
@@ -116,8 +117,9 @@ const AgeCalculator = () => {
       const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      const totalMinutes = Math.floor(diff / (1000 * 60));
 
-      setCountdown({ days, hours, minutes, seconds });
+      setCountdown({ days, hours, minutes, seconds, totalMinutes });
     };
 
     updateCountdown();
@@ -328,7 +330,7 @@ const AgeCalculator = () => {
                         <Cake className="h-5 w-5 text-colorful-pink" />
                         <p className="text-sm font-medium text-colorful-pink">Next Birthday Countdown</p>
                       </div>
-                      <div className="grid grid-cols-4 gap-2">
+                      <div className="grid grid-cols-5 gap-2">
                         <div className="p-2 rounded-lg bg-background/80">
                           <p className="text-2xl font-bold"><RainbowNumber value={countdown.days} /></p>
                           <p className="text-xs text-colorful-primary">Days</p>
@@ -339,11 +341,15 @@ const AgeCalculator = () => {
                         </div>
                         <div className="p-2 rounded-lg bg-background/80">
                           <p className="text-2xl font-bold"><RainbowNumber value={countdown.minutes} /></p>
-                          <p className="text-xs text-colorful-accent">Minutes</p>
+                          <p className="text-xs text-colorful-accent">Mins</p>
                         </div>
                         <div className="p-2 rounded-lg bg-background/80">
                           <p className="text-2xl font-bold"><RainbowNumber value={countdown.seconds} /></p>
-                          <p className="text-xs text-colorful-success">Seconds</p>
+                          <p className="text-xs text-colorful-success">Secs</p>
+                        </div>
+                        <div className="p-2 rounded-lg bg-background/80">
+                          <p className="text-lg font-bold"><RainbowNumber value={countdown.totalMinutes.toLocaleString()} /></p>
+                          <p className="text-xs text-colorful-purple">Total Mins</p>
                         </div>
                       </div>
                     </div>
