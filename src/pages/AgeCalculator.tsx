@@ -298,7 +298,7 @@ const AgeCalculator = () => {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     <div className="p-4 rounded-xl bg-muted/50 text-center">
                       <p className="text-sm mb-1"><span className="text-colorful-primary">Total Days</span></p>
                       <p className="text-xl font-bold">
@@ -317,13 +317,6 @@ const AgeCalculator = () => {
                       <p className="text-sm mb-1"><span className="text-colorful-accent">Total Minutes</span></p>
                       <p className="text-xl font-bold">
                         <RainbowNumber value={result.totalMinutes.toLocaleString()} />
-                      </p>
-                    </div>
-
-                    <div className="p-4 rounded-xl bg-muted/50 text-center">
-                      <p className="text-sm mb-1"><span className="text-colorful-success">Total Seconds</span></p>
-                      <p className="text-xl font-bold">
-                        <RainbowNumber value={result.totalSeconds.toLocaleString()} />
                       </p>
                     </div>
                   </div>
