@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Cake, PartyPopper, Calendar } from "lucide-react";
 import { Confetti } from "@/components/Confetti";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   Select,
   SelectContent,
@@ -49,6 +48,34 @@ const AgeCalculator = () => {
       calculateAge();
     } else {
       setResult(null);
+    }
+  }, [day, month, year]);
+
+  // Check if today is birthday on date selection
+  useEffect(() => {
+    if (day && month && year) {
+      const today = new Date();
+      const selectedMonth = parseInt(month);
+      const selectedDay = parseInt(day);
+      
+      // Check if today is the user's birthday
+      if (today.getMonth() === selectedMonth && today.getDate() === selectedDay) {
+        setShowBirthdayMessage(true);
+        setShowConfetti(true);
+        
+        // Play birthday sound
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+        audio.volume = 0.5;
+        audio.play().catch(() => {
+          // Autoplay might be blocked, ignore error
+        });
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+          setShowBirthdayMessage(false);
+          setShowConfetti(false);
+        }, 3000);
+      }
     }
   }, [day, month, year]);
 
@@ -198,11 +225,10 @@ const AgeCalculator = () => {
 
       <div className="relative z-10 p-6 md:p-8">
         <div className="max-w-xl mx-auto">
-          <header className="flex items-center justify-between mb-8">
+          <header className="flex items-center justify-start mb-8">
             <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <ThemeToggle />
           </header>
 
           {/* Title */}

@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, TrendingUp, TrendingDown, Calculator, DollarSign } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 const ProfitLossCalculator = () => {
   const navigate = useNavigate();
@@ -82,11 +81,10 @@ const ProfitLossCalculator = () => {
 
       <div className="relative z-10 p-4">
         <div className="max-w-4xl mx-auto space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-start">
             <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <ThemeToggle />
           </div>
 
           <div className="text-center space-y-2">
@@ -303,31 +301,6 @@ const ProfitLossCalculator = () => {
             </CardContent>
           </Card>
 
-          <Card className="glass-card border-0">
-            <CardHeader>
-              <CardTitle>Quick Reference</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div className="p-3 rounded-xl bg-muted/50">
-                  <p className="font-semibold mb-1">Profit Formula</p>
-                  <p className="text-muted-foreground">Profit = Selling Price - Cost Price</p>
-                </div>
-                <div className="p-3 rounded-xl bg-muted/50">
-                  <p className="font-semibold mb-1">Profit %</p>
-                  <p className="text-muted-foreground">Profit % = (Profit / Cost Price) × 100</p>
-                </div>
-                <div className="p-3 rounded-xl bg-muted/50">
-                  <p className="font-semibold mb-1">Markup vs Margin</p>
-                  <p className="text-muted-foreground">Markup is % of cost, Margin is % of selling price</p>
-                </div>
-                <div className="p-3 rounded-xl bg-muted/50">
-                  <p className="font-semibold mb-1">Break-Even</p>
-                  <p className="text-muted-foreground">Break-even = When Selling Price = Cost Price</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>

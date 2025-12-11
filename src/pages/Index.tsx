@@ -8,36 +8,42 @@ const tools = [
     icon: Equal,
     path: "/calculator",
     gradient: "from-accent to-primary",
+    textColor: "text-colorful-accent",
   },
   {
     title: "Unit Converter",
     icon: Calculator,
     path: "/unit-converter",
     gradient: "from-primary to-accent",
+    textColor: "text-colorful-primary",
   },
   {
     title: "Percentage Calculator",
     icon: Percent,
     path: "/percentage-calculator",
     gradient: "from-secondary to-primary",
+    textColor: "text-colorful-secondary",
   },
   {
     title: "Profit & Loss",
     icon: TrendingUp,
     path: "/profit-loss-calculator",
     gradient: "from-accent to-success",
+    textColor: "text-colorful-success",
   },
   {
     title: "Age Calculator",
     icon: Calendar,
     path: "/age-calculator",
     gradient: "from-primary to-secondary",
+    textColor: "text-colorful-purple",
   },
   {
     title: "BMI Calculator",
     icon: Scale,
     path: "/bmi-calculator",
     gradient: "from-success to-accent",
+    textColor: "text-colorful-pink",
   },
 ];
 
@@ -81,7 +87,7 @@ const Index = () => {
                   <div className={`p-4 rounded-2xl bg-gradient-to-br ${tool.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <tool.icon className="h-8 w-8 text-primary-foreground" />
                   </div>
-                  <h3 className="font-bold text-foreground">{tool.title}</h3>
+                  <h3 className={`font-bold ${tool.textColor}`}>{tool.title}</h3>
                 </div>
               </Card>
             ))}
