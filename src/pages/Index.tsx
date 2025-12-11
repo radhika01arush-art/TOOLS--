@@ -59,35 +59,35 @@ const Index = () => {
         <div className="absolute -bottom-40 right-1/4 w-72 h-72 bg-secondary/20 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 p-6 md:p-8 lg:p-12">
+      <div className="relative z-10 p-4 sm:p-6 md:p-8 lg:p-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <header className="flex items-center justify-center mb-16">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-primary/10">
-                <Sparkles className="h-6 w-6 text-primary" />
+          <header className="flex items-center justify-center mb-8 sm:mb-16">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="p-1.5 sm:p-2 rounded-xl bg-primary/10">
+                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
               </div>
-              <span className="text-xl font-bold gradient-text">Daily Tools</span>
+              <span className="text-lg sm:text-xl font-bold gradient-text">Daily Tools</span>
             </div>
           </header>
 
           {/* Tools Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mt-6 sm:mt-12">
             {tools.map((tool, index) => (
               <Card
                 key={tool.path}
-                className="group glass-card p-6 cursor-pointer hover:scale-[1.03] transition-all duration-300 hover:shadow-xl border-0 overflow-hidden relative"
+                className="group glass-card p-3 sm:p-6 cursor-pointer hover:scale-[1.03] transition-all duration-300 hover:shadow-xl border-0 overflow-hidden relative"
                 onClick={() => navigate(tool.path)}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {/* Gradient accent line */}
                 <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${tool.gradient} opacity-0 group-hover:opacity-100 transition-opacity`} />
                 
-                <div className="flex flex-col items-center gap-4 text-center">
-                  <div className={`p-4 rounded-2xl bg-gradient-to-br ${tool.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <tool.icon className="h-8 w-8 text-primary-foreground" />
+                <div className="flex flex-col items-center gap-2 sm:gap-4 text-center">
+                  <div className={`p-2.5 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-br ${tool.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <tool.icon className="h-5 w-5 sm:h-8 sm:w-8 text-primary-foreground" />
                   </div>
-                  <h3 className={`font-bold ${tool.textColor}`}>{tool.title}</h3>
+                  <h3 className={`text-xs sm:text-base font-bold ${tool.textColor}`}>{tool.title}</h3>
                 </div>
               </Card>
             ))}
