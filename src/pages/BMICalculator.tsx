@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { ArrowLeft, Scale } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -70,7 +69,7 @@ const BMICalculator = () => {
               </div>
               <span className="text-xl font-bold gradient-text">BMI Calculator</span>
             </div>
-            <ThemeToggle />
+            <div className="w-10" /> {/* Spacer for alignment */}
           </header>
 
           <Card className="glass-card p-6 border-0">

@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 
 const PercentageCalculator = () => {
@@ -50,11 +49,10 @@ const PercentageCalculator = () => {
 
       <div className="relative z-10">
         <header className="backdrop-blur-sm bg-background/80 sticky top-0 z-50">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-start">
             <Button variant="ghost" size="icon" onClick={() => navigate("/")}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <ThemeToggle />
           </div>
         </header>
 

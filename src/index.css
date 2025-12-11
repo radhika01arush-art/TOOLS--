@@ -137,6 +137,30 @@ All colors MUST be HSL.
     background-clip: text;
   }
   
+  .text-colorful-primary {
+    color: hsl(195 85% 55%);
+  }
+  
+  .text-colorful-secondary {
+    color: hsl(15 85% 60%);
+  }
+  
+  .text-colorful-accent {
+    color: hsl(165 70% 50%);
+  }
+  
+  .text-colorful-success {
+    color: hsl(140 65% 50%);
+  }
+  
+  .text-colorful-purple {
+    color: hsl(280 70% 60%);
+  }
+  
+  .text-colorful-pink {
+    color: hsl(330 80% 60%);
+  }
+  
   .bounce-in {
     animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
