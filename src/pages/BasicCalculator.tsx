@@ -3,6 +3,7 @@ import { ArrowLeft, Calculator } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { RainbowText, RainbowNumber } from "@/components/RainbowText";
 
 const BasicCalculator = () => {
   const navigate = useNavigate();
@@ -106,7 +107,7 @@ const BasicCalculator = () => {
               <div className="p-2 rounded-xl bg-primary/10">
                 <Calculator className="h-6 w-6 text-primary" />
               </div>
-              <span className="text-xl font-bold gradient-text">Calculator</span>
+              <span className="text-xl font-bold"><RainbowText text="Calculator" /></span>
             </div>
             <div className="w-10" />
           </header>
@@ -114,8 +115,8 @@ const BasicCalculator = () => {
           <Card className="glass-card p-4 border-0">
             {/* Display */}
             <div className="bg-background/50 rounded-2xl p-4 mb-4">
-              <div className="text-right text-4xl font-bold text-foreground truncate">
-                {display}
+              <div className="text-right text-4xl font-bold truncate">
+                <RainbowNumber value={display} />
               </div>
             </div>
 

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, TrendingUp, TrendingDown, Calculator, DollarSign } from "lucide-react";
+import { RainbowText, RainbowNumber } from "@/components/RainbowText";
 
 const ProfitLossCalculator = () => {
   const navigate = useNavigate();
@@ -91,9 +92,9 @@ const ProfitLossCalculator = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-accent to-success mb-4">
               <TrendingUp className="h-8 w-8 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold">Profit & Loss Calculator</h1>
+            <h1 className="text-3xl font-bold"><RainbowText text="Profit & Loss Calculator" /></h1>
             <p className="text-muted-foreground">
-              Calculate profit, loss, margins, and pricing for your business
+              <RainbowText text="Calculate profit, loss, margins, and pricing for your business" />
             </p>
           </div>
 
@@ -161,9 +162,9 @@ const ProfitLossCalculator = () => {
                         </span>
                       </div>
                       <div className="text-center space-y-1">
-                        <p className="text-2xl font-bold">${plResult.amount.toFixed(2)}</p>
+                        <p className="text-2xl font-bold"><span className="text-colorful-success">$</span><RainbowNumber value={plResult.amount.toFixed(2)} /></p>
                         <p className="text-muted-foreground">
-                          {plResult.percentage.toFixed(2)}% {plResult.type.toLowerCase()}
+                          <RainbowNumber value={plResult.percentage.toFixed(2)} /><span className="text-colorful-accent">%</span> {plResult.type.toLowerCase()}
                         </p>
                       </div>
                     </div>
@@ -204,8 +205,8 @@ const ProfitLossCalculator = () => {
                   </Button>
                   {spResult !== null && (
                     <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-center">
-                      <p className="text-sm text-muted-foreground mb-1">Selling Price</p>
-                      <p className="text-3xl font-bold gradient-text">${spResult.toFixed(2)}</p>
+                      <p className="text-sm mb-1"><RainbowText text="Selling Price" /></p>
+                      <p className="text-3xl font-bold"><span className="text-colorful-success">$</span><RainbowNumber value={spResult.toFixed(2)} /></p>
                     </div>
                   )}
                 </TabsContent>
@@ -244,8 +245,8 @@ const ProfitLossCalculator = () => {
                   </Button>
                   {cpResult !== null && (
                     <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-center">
-                      <p className="text-sm text-muted-foreground mb-1">Cost Price</p>
-                      <p className="text-3xl font-bold gradient-text">${cpResult.toFixed(2)}</p>
+                      <p className="text-sm mb-1"><RainbowText text="Cost Price" /></p>
+                      <p className="text-3xl font-bold"><span className="text-colorful-success">$</span><RainbowNumber value={cpResult.toFixed(2)} /></p>
                     </div>
                   )}
                 </TabsContent>
@@ -286,12 +287,12 @@ const ProfitLossCalculator = () => {
                     <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
                       <div className="grid grid-cols-2 gap-4 text-center">
                         <div>
-                          <p className="text-sm text-muted-foreground mb-1">Selling Price</p>
-                          <p className="text-2xl font-bold gradient-text">${marginResult.sellingPrice.toFixed(2)}</p>
+                          <p className="text-sm mb-1"><RainbowText text="Selling Price" /></p>
+                          <p className="text-2xl font-bold"><span className="text-colorful-success">$</span><RainbowNumber value={marginResult.sellingPrice.toFixed(2)} /></p>
                         </div>
                         <div>
-                          <p className="text-sm text-muted-foreground mb-1">Profit Margin</p>
-                          <p className="text-2xl font-bold gradient-text">{marginResult.margin.toFixed(2)}%</p>
+                          <p className="text-sm mb-1"><RainbowText text="Profit Margin" /></p>
+                          <p className="text-2xl font-bold"><RainbowNumber value={marginResult.margin.toFixed(2)} /><span className="text-colorful-accent">%</span></p>
                         </div>
                       </div>
                     </div>

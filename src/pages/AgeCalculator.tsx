@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Cake, PartyPopper, Calendar } from "lucide-react";
 import { Confetti } from "@/components/Confetti";
+import { RainbowText, RainbowNumber } from "@/components/RainbowText";
 import {
   Select,
   SelectContent,
@@ -223,8 +224,12 @@ const AgeCalculator = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary mb-4">
               <Calendar className="h-8 w-8 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold mb-2">Age Calculator</h1>
-            <p className="text-muted-foreground">Discover exactly how long you've been alive</p>
+            <h1 className="text-3xl font-bold mb-2">
+              <RainbowText text="Age Calculator" />
+            </h1>
+            <p className="text-muted-foreground">
+              <RainbowText text="Discover exactly how long you've been alive" />
+            </p>
           </div>
 
           <Card className="glass-card p-6 border-0">
@@ -282,38 +287,43 @@ const AgeCalculator = () => {
               {result && (
                 <div className="space-y-4 fade-up">
                   <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-center">
-                    <p className="text-sm text-muted-foreground mb-1">Your Age</p>
-                    <p className="text-3xl font-bold gradient-text">
-                      {result.years} years, {result.months} months, {result.days} days
+                    <p className="text-sm mb-1"><RainbowText text="Your Age" /></p>
+                    <p className="text-3xl font-bold">
+                      <span className="text-colorful-primary">{result.years}</span>
+                      <span className="text-colorful-secondary"> years, </span>
+                      <span className="text-colorful-accent">{result.months}</span>
+                      <span className="text-colorful-success"> months, </span>
+                      <span className="text-colorful-purple">{result.days}</span>
+                      <span className="text-colorful-pink"> days</span>
                     </p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl bg-muted/50 text-center">
-                      <p className="text-sm text-muted-foreground mb-1">Total Days</p>
-                      <p className="text-xl font-bold text-foreground">
-                        {result.totalDays.toLocaleString()}
+                      <p className="text-sm mb-1"><span className="text-colorful-primary">Total Days</span></p>
+                      <p className="text-xl font-bold">
+                        <RainbowNumber value={result.totalDays.toLocaleString()} />
                       </p>
                     </div>
 
                     <div className="p-4 rounded-xl bg-muted/50 text-center">
-                      <p className="text-sm text-muted-foreground mb-1">Total Hours</p>
-                      <p className="text-xl font-bold text-foreground">
-                        {result.totalHours.toLocaleString()}
+                      <p className="text-sm mb-1"><span className="text-colorful-secondary">Total Hours</span></p>
+                      <p className="text-xl font-bold">
+                        <RainbowNumber value={result.totalHours.toLocaleString()} />
                       </p>
                     </div>
 
                     <div className="p-4 rounded-xl bg-muted/50 text-center">
-                      <p className="text-sm text-muted-foreground mb-1">Total Minutes</p>
-                      <p className="text-xl font-bold text-foreground">
-                        {result.totalMinutes.toLocaleString()}
+                      <p className="text-sm mb-1"><span className="text-colorful-accent">Total Minutes</span></p>
+                      <p className="text-xl font-bold">
+                        <RainbowNumber value={result.totalMinutes.toLocaleString()} />
                       </p>
                     </div>
 
                     <div className="p-4 rounded-xl bg-muted/50 text-center">
-                      <p className="text-sm text-muted-foreground mb-1">Total Seconds</p>
-                      <p className="text-xl font-bold text-foreground">
-                        {result.totalSeconds.toLocaleString()}
+                      <p className="text-sm mb-1"><span className="text-colorful-success">Total Seconds</span></p>
+                      <p className="text-xl font-bold">
+                        <RainbowNumber value={result.totalSeconds.toLocaleString()} />
                       </p>
                     </div>
                   </div>
@@ -327,20 +337,20 @@ const AgeCalculator = () => {
                       </div>
                       <div className="grid grid-cols-4 gap-2">
                         <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold text-colorful-primary">{countdown.days}</p>
-                          <p className="text-xs text-muted-foreground">Days</p>
+                          <p className="text-2xl font-bold"><RainbowNumber value={countdown.days} /></p>
+                          <p className="text-xs text-colorful-primary">Days</p>
                         </div>
                         <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold text-colorful-secondary">{countdown.hours}</p>
-                          <p className="text-xs text-muted-foreground">Hours</p>
+                          <p className="text-2xl font-bold"><RainbowNumber value={countdown.hours} /></p>
+                          <p className="text-xs text-colorful-secondary">Hours</p>
                         </div>
                         <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold text-colorful-accent">{countdown.minutes}</p>
-                          <p className="text-xs text-muted-foreground">Minutes</p>
+                          <p className="text-2xl font-bold"><RainbowNumber value={countdown.minutes} /></p>
+                          <p className="text-xs text-colorful-accent">Minutes</p>
                         </div>
                         <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold text-colorful-success">{countdown.seconds}</p>
-                          <p className="text-xs text-muted-foreground">Seconds</p>
+                          <p className="text-2xl font-bold"><RainbowNumber value={countdown.seconds} /></p>
+                          <p className="text-xs text-colorful-success">Seconds</p>
                         </div>
                       </div>
                     </div>
