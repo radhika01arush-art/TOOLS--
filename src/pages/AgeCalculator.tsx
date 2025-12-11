@@ -39,7 +39,7 @@ const AgeCalculator = () => {
     seconds: number;
   } | null>(null);
   const [nextBirthdayDate, setNextBirthdayDate] = useState<Date | null>(null);
-  const [showCountdown, setShowCountdown] = useState(false);
+  const [showCountdown, setShowCountdown] = useState(true);
   const [showBirthdayMessage, setShowBirthdayMessage] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -179,19 +179,6 @@ const AgeCalculator = () => {
     return new Date(parseInt(yearValue), parseInt(monthIndex) + 1, 0).getDate();
   };
 
-  const toggleCountdown = () => {
-    setShowCountdown(!showCountdown);
-    if (!showCountdown && nextBirthdayDate) {
-      // Initialize countdown when showing
-      const now = new Date();
-      const diff = nextBirthdayDate.getTime() - now.getTime();
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-      setCountdown({ days, hours, minutes, seconds });
-    }
-  };
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 120 }, (_, i) => currentYear - i);
@@ -331,38 +318,28 @@ const AgeCalculator = () => {
                     </div>
                   </div>
 
-                  {/* Birthday Countdown Toggle Button */}
-                  <Button 
-                    variant="outline" 
-                    className="w-full gap-2"
-                    onClick={toggleCountdown}
-                  >
-                    <Cake className="h-4 w-4" />
-                    {showCountdown ? "Hide Birthday Countdown" : "Show Birthday Countdown"}
-                  </Button>
-
-                  {/* Countdown Display */}
-                  {showCountdown && countdown && (
+                  {/* Birthday Countdown - Always Visible */}
+                  {countdown && (
                     <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 text-center animate-fade-in">
                       <div className="flex items-center justify-center gap-2 mb-3">
-                        <Cake className="h-5 w-5 text-primary" />
-                        <p className="text-sm font-medium text-primary">Next Birthday Countdown</p>
+                        <Cake className="h-5 w-5 text-colorful-pink" />
+                        <p className="text-sm font-medium text-colorful-pink">Next Birthday Countdown</p>
                       </div>
                       <div className="grid grid-cols-4 gap-2">
                         <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold text-foreground">{countdown.days}</p>
+                          <p className="text-2xl font-bold text-colorful-primary">{countdown.days}</p>
                           <p className="text-xs text-muted-foreground">Days</p>
                         </div>
                         <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold text-foreground">{countdown.hours}</p>
+                          <p className="text-2xl font-bold text-colorful-secondary">{countdown.hours}</p>
                           <p className="text-xs text-muted-foreground">Hours</p>
                         </div>
                         <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold text-foreground">{countdown.minutes}</p>
+                          <p className="text-2xl font-bold text-colorful-accent">{countdown.minutes}</p>
                           <p className="text-xs text-muted-foreground">Minutes</p>
                         </div>
                         <div className="p-2 rounded-lg bg-background/80">
-                          <p className="text-2xl font-bold text-foreground">{countdown.seconds}</p>
+                          <p className="text-2xl font-bold text-colorful-success">{countdown.seconds}</p>
                           <p className="text-xs text-muted-foreground">Seconds</p>
                         </div>
                       </div>
