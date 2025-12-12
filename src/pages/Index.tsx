@@ -1,6 +1,7 @@
 import { Calculator, Percent, TrendingUp, Calendar, Scale, Sparkles, Equal } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
+import SEO from "@/components/SEO";
 
 const tools = [
   {
@@ -47,11 +48,31 @@ const tools = [
   },
 ];
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Daily Tools",
+  "description": "Free online calculators and converters for everyday use. Calculate percentages, convert units, track age, calculate BMI and more.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+};
+
 const Index = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Free Online Calculators & Converters"
+        description="Daily Tools - Free online calculators and converters. Calculate percentages, convert units, track age, BMI calculator, profit & loss and more."
+        keywords="calculator, unit converter, percentage calculator, BMI calculator, age calculator, profit loss calculator, free online tools"
+        structuredData={structuredData}
+      />
       {/* Decorative background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />

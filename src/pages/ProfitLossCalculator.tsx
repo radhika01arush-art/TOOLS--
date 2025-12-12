@@ -7,6 +7,16 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, TrendingUp, TrendingDown, Calculator, DollarSign } from "lucide-react";
 import { RainbowText, RainbowNumber } from "@/components/RainbowText";
+import SEO from "@/components/SEO";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Profit & Loss Calculator",
+  "description": "Free profit and loss calculator. Calculate profit margins, markup, selling price and cost price for your business.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+};
 
 const ProfitLossCalculator = () => {
   const navigate = useNavigate();
@@ -74,6 +84,12 @@ const ProfitLossCalculator = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Profit & Loss Calculator - Calculate Margins & Markup"
+        description="Free profit and loss calculator. Calculate profit percentage, selling price, cost price, markup and profit margins for your business."
+        keywords="profit calculator, loss calculator, profit margin calculator, markup calculator, selling price calculator, business calculator"
+        structuredData={structuredData}
+      />
       {/* Decorative background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 left-1/4 w-80 h-80 bg-accent/20 rounded-full blur-3xl" />
