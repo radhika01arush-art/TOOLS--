@@ -76,18 +76,18 @@ const AIMathInput = ({ onResult, onClose }: AIMathInputProps) => {
   ];
 
   return (
-    <Card className="glass-card p-4 border-0 animate-fade-in">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-primary" />
+    <Card className="glass-card p-3 sm:p-4 border-0 animate-fade-in">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <h3 className="text-xs sm:text-sm font-semibold flex items-center gap-2">
+          <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
           <RainbowText text="AI Calculator" />
         </h3>
-        <Button variant="ghost" size="sm" onClick={onClose}>
+        <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={onClose}>
           <X className="h-4 w-4" />
         </Button>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         {/* Input */}
         <div className="flex gap-2">
           <Input
@@ -95,25 +95,25 @@ const AIMathInput = ({ onResult, onClose }: AIMathInputProps) => {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Ask any math question..."
             onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-            className="flex-1"
+            className="flex-1 text-sm h-9"
             disabled={loading}
           />
           <Button 
             onClick={handleSubmit} 
             disabled={loading || !query.trim()}
-            className="shrink-0"
+            className="shrink-0 h-9 w-9 p-0"
           >
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
           </Button>
         </div>
 
         {/* Examples */}
-        <div className="flex flex-wrap gap-1">
+        <div className="grid grid-cols-2 gap-1">
           {examples.map((example) => (
             <button
               key={example}
               onClick={() => setQuery(example)}
-              className="text-xs px-2 py-1 rounded-full bg-muted hover:bg-muted/80 transition-colors truncate max-w-[150px]"
+              className="text-[10px] sm:text-xs px-2 py-1.5 rounded-lg bg-muted hover:bg-muted/80 transition-colors truncate text-left"
               title={example}
             >
               {example}
@@ -123,22 +123,22 @@ const AIMathInput = ({ onResult, onClose }: AIMathInputProps) => {
 
         {/* Result */}
         {result && (
-          <div className="bg-background/50 rounded-xl p-3 space-y-2 animate-fade-in">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">{result.expression}</span>
-              <Button size="sm" variant="outline" onClick={useResult} className="h-7 text-xs">
-                Use Result
+          <div className="bg-background/50 rounded-xl p-2 sm:p-3 space-y-2 animate-fade-in">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[10px] sm:text-xs text-muted-foreground truncate flex-1">{result.expression}</span>
+              <Button size="sm" variant="outline" onClick={useResult} className="h-6 text-[10px] sm:text-xs shrink-0">
+                Use
               </Button>
             </div>
-            <div className="text-2xl font-bold">
+            <div className="text-xl sm:text-2xl font-bold">
               <RainbowNumber value={String(result.result)} />
             </div>
-            <p className="text-xs text-muted-foreground">{result.explanation}</p>
+            <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2">{result.explanation}</p>
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground text-center">
-          Ask questions in plain English - AI will calculate for you!
+        <p className="text-[10px] sm:text-xs text-muted-foreground text-center">
+          Ask in plain English - AI calculates for you!
         </p>
       </div>
     </Card>
