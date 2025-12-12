@@ -78,35 +78,35 @@ const GraphPlotter = ({ onClose }: GraphPlotterProps) => {
   ];
 
   return (
-    <Card className="glass-card p-4 border-0 animate-fade-in">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-primary" />
+    <Card className="glass-card p-3 sm:p-4 border-0 animate-fade-in">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <h3 className="text-xs sm:text-sm font-semibold flex items-center gap-2">
+          <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
           <RainbowText text="Graph Plotter" />
         </h3>
-        <Button variant="ghost" size="sm" onClick={onClose}>×</Button>
+        <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={onClose}>×</Button>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         {/* Equation input */}
         <div>
-          <label className="text-xs text-muted-foreground mb-1 block">y = </label>
+          <label className="text-[10px] sm:text-xs text-muted-foreground mb-1 block">y = </label>
           <Input
             value={equation}
             onChange={(e) => setEquation(e.target.value)}
-            placeholder="Enter equation (e.g., x^2, sin(x))"
-            className="font-mono"
+            placeholder="e.g., x^2, sin(x)"
+            className="font-mono text-sm h-9"
           />
         </div>
 
         {/* Preset equations */}
-        <div className="flex flex-wrap gap-1">
+        <div className="grid grid-cols-6 gap-1">
           {presets.map((preset) => (
             <Button
               key={preset.value}
               variant={equation === preset.value ? "default" : "outline"}
               size="sm"
-              className="text-xs h-7"
+              className="text-[10px] sm:text-xs h-6 sm:h-7 px-1 sm:px-2"
               onClick={() => setEquation(preset.value)}
             >
               {preset.label}
@@ -117,49 +117,49 @@ const GraphPlotter = ({ onClose }: GraphPlotterProps) => {
         {/* Range inputs */}
         <div className="flex gap-2">
           <div className="flex-1">
-            <label className="text-xs text-muted-foreground mb-1 block">X Min</label>
+            <label className="text-[10px] sm:text-xs text-muted-foreground mb-1 block">X Min</label>
             <Input
               type="number"
               value={xMin}
               onChange={(e) => setXMin(e.target.value)}
-              className="h-8"
+              className="h-8 text-sm"
             />
           </div>
           <div className="flex-1">
-            <label className="text-xs text-muted-foreground mb-1 block">X Max</label>
+            <label className="text-[10px] sm:text-xs text-muted-foreground mb-1 block">X Max</label>
             <Input
               type="number"
               value={xMax}
               onChange={(e) => setXMax(e.target.value)}
-              className="h-8"
+              className="h-8 text-sm"
             />
           </div>
         </div>
 
         {/* Error message */}
         {error && (
-          <div className="flex items-center gap-2 text-destructive text-xs">
-            <AlertCircle className="h-3 w-3" />
-            {error}
+          <div className="flex items-center gap-2 text-destructive text-[10px] sm:text-xs">
+            <AlertCircle className="h-3 w-3 shrink-0" />
+            <span className="truncate">{error}</span>
           </div>
         )}
 
         {/* Graph */}
-        <div className="h-64 w-full bg-background/50 rounded-xl p-2">
+        <div className="h-48 sm:h-64 w-full bg-background/50 rounded-xl p-1 sm:p-2">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+            <LineChart data={data} margin={{ top: 5, right: 5, left: -25, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
               <XAxis 
                 dataKey="x" 
                 type="number" 
                 domain={['dataMin', 'dataMax']}
-                tick={{ fontSize: 10 }}
+                tick={{ fontSize: 8 }}
                 className="text-muted-foreground"
               />
               <YAxis 
                 type="number"
                 domain={['auto', 'auto']}
-                tick={{ fontSize: 10 }}
+                tick={{ fontSize: 8 }}
                 className="text-muted-foreground"
               />
               <Tooltip 
@@ -167,7 +167,7 @@ const GraphPlotter = ({ onClose }: GraphPlotterProps) => {
                   backgroundColor: 'hsl(var(--card))', 
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '8px',
-                  fontSize: '12px'
+                  fontSize: '10px'
                 }}
                 formatter={(value: number) => [value?.toFixed(4), 'y']}
                 labelFormatter={(label) => `x = ${label}`}
@@ -186,8 +186,8 @@ const GraphPlotter = ({ onClose }: GraphPlotterProps) => {
           </ResponsiveContainer>
         </div>
 
-        <p className="text-xs text-muted-foreground text-center">
-          Supports: x^2, sin(x), cos(x), tan(x), sqrt(x), log(x), ln(x), pi, e
+        <p className="text-[10px] sm:text-xs text-muted-foreground text-center">
+          Supports: x^2, sin(x), cos(x), sqrt(x), log(x)
         </p>
       </div>
     </Card>
