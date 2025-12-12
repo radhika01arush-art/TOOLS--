@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
-import { ArrowLeft, Calculator, History, Copy, Check, Trash2, FlaskConical, Keyboard, X } from "lucide-react";
+import { ArrowLeft, Calculator, History, Copy, Check, Trash2, FlaskConical, Keyboard, X, TrendingUp, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RainbowText, RainbowNumber } from "@/components/RainbowText";
 import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
-
+import GraphPlotter from "@/components/GraphPlotter";
+import AIMathInput from "@/components/AIMathInput";
 interface HistoryItem {
   expression: string;
   result: string;
@@ -16,8 +17,8 @@ interface HistoryItem {
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Advanced Calculator",
-  "description": "Free online calculator with history, memory functions, scientific mode, and keyboard support.",
+  "name": "Advanced Calculator with Graph Plotter & AI",
+  "description": "Free online calculator with AI natural language input, graph plotting, history, memory functions, and scientific mode.",
   "applicationCategory": "UtilityApplication",
   "operatingSystem": "Any"
 };
@@ -36,6 +37,8 @@ const BasicCalculator = () => {
   });
   const [showHistory, setShowHistory] = useState(false);
   const [showScientific, setShowScientific] = useState(false);
+  const [showGraph, setShowGraph] = useState(false);
+  const [showAI, setShowAI] = useState(false);
   const [memory, setMemory] = useState<number>(0);
   const [copied, setCopied] = useState(false);
 
@@ -240,15 +243,21 @@ const BasicCalculator = () => {
     setWaitingForOperand(true);
   };
 
+  const handleAIResult = (result: string) => {
+    setDisplay(result);
+    setShowAI(false);
+    setWaitingForOperand(true);
+  };
+
   const buttonClass = "h-12 sm:h-14 text-base sm:text-lg font-medium rounded-xl transition-all duration-200 hover:scale-105 active:scale-95";
   const sciButtonClass = "h-10 sm:h-12 text-xs sm:text-sm font-medium rounded-xl transition-all duration-200 hover:scale-105 active:scale-95";
 
   return (
     <div className="min-h-screen">
       <SEO
-        title="Advanced Calculator - Free Online Calculator with History"
-        description="Free online calculator with calculation history, memory functions, scientific mode, and keyboard support. The best online calculator experience."
-        keywords="calculator, scientific calculator, online calculator, calculator history, memory calculator, math calculator"
+        title="Advanced Calculator - Graph Plotter & AI Math | Free Online"
+        description="Free online calculator with AI natural language input, graph plotting, scientific mode, history, and memory. Type questions like 'what is 20% of 500?' or plot y=x²."
+        keywords="calculator, graphing calculator, AI calculator, scientific calculator, graph plotter, online calculator, math calculator, plot equations"
         structuredData={structuredData}
       />
       
@@ -276,6 +285,20 @@ const BasicCalculator = () => {
             </div>
             <div className="flex gap-1 sm:gap-2">
               <button
+                onClick={() => setShowAI(!showAI)}
+                className={`p-2 rounded-xl transition-colors ${showAI ? 'bg-accent text-accent-foreground' : 'bg-primary/10 hover:bg-primary/20'}`}
+                title="AI Calculator"
+              >
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+              <button
+                onClick={() => setShowGraph(!showGraph)}
+                className={`p-2 rounded-xl transition-colors ${showGraph ? 'bg-accent text-accent-foreground' : 'bg-primary/10 hover:bg-primary/20'}`}
+                title="Graph Plotter"
+              >
+                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+              <button
                 onClick={() => setShowScientific(!showScientific)}
                 className={`p-2 rounded-xl transition-colors ${showScientific ? 'bg-primary text-primary-foreground' : 'bg-primary/10 hover:bg-primary/20'}`}
                 title="Scientific Mode"
@@ -291,6 +314,20 @@ const BasicCalculator = () => {
               </button>
             </div>
           </header>
+
+          {/* AI Math Input */}
+          {showAI && (
+            <div className="mb-4">
+              <AIMathInput onResult={handleAIResult} onClose={() => setShowAI(false)} />
+            </div>
+          )}
+
+          {/* Graph Plotter */}
+          {showGraph && (
+            <div className="mb-4">
+              <GraphPlotter onClose={() => setShowGraph(false)} />
+            </div>
+          )}
 
           {/* History Panel */}
           {showHistory && (
