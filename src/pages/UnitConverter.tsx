@@ -7,6 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RainbowText, RainbowNumber } from "@/components/RainbowText";
+import SEO from "@/components/SEO";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Unit Converter",
+  "description": "Free online unit converter. Convert length, weight, temperature, volume, speed and area units instantly.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+};
 
 type ConversionCategory = "length" | "weight" | "temperature" | "volume" | "speed" | "area";
 
@@ -160,6 +170,12 @@ const UnitConverter = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Unit Converter - Convert Length, Weight, Temperature & More"
+        description="Free online unit converter. Instantly convert between meters, feet, kilograms, pounds, celsius, fahrenheit, liters, gallons and more units."
+        keywords="unit converter, length converter, weight converter, temperature converter, volume converter, metric converter, imperial converter"
+        structuredData={structuredData}
+      />
       {/* Decorative background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />

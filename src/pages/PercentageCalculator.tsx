@@ -7,6 +7,16 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { RainbowText, RainbowNumber } from "@/components/RainbowText";
+import SEO from "@/components/SEO";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Percentage Calculator",
+  "description": "Free online percentage calculator. Calculate percentages, percentage change, and percentage increase or decrease.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+};
 
 const PercentageCalculator = () => {
   const navigate = useNavigate();
@@ -42,6 +52,12 @@ const PercentageCalculator = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Percentage Calculator - Calculate Percentages Easily"
+        description="Free percentage calculator. Find what percent X is of Y, calculate percentage change, increase or decrease any value by a percentage."
+        keywords="percentage calculator, percent calculator, percentage change, percentage increase, percentage decrease, percent of number"
+        structuredData={structuredData}
+      />
       {/* Decorative background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-3xl" />

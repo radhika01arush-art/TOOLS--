@@ -6,6 +6,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RainbowText, RainbowNumber } from "@/components/RainbowText";
+import SEO from "@/components/SEO";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "BMI Calculator",
+  "description": "Free BMI calculator. Calculate your Body Mass Index using metric or imperial units. Find out if you are underweight, normal, overweight or obese.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+};
 
 const BMICalculator = () => {
   const navigate = useNavigate();
@@ -48,6 +58,12 @@ const BMICalculator = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="BMI Calculator - Calculate Your Body Mass Index"
+        description="Free BMI calculator. Calculate your Body Mass Index using metric (kg/cm) or imperial (lbs/ft) units. Instant health category results."
+        keywords="BMI calculator, body mass index, weight calculator, health calculator, BMI chart, obesity calculator"
+        structuredData={structuredData}
+      />
       {/* Decorative background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />

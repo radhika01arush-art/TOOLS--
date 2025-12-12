@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, Cake, PartyPopper, Calendar } from "lucide-react";
 import { Confetti } from "@/components/Confetti";
 import { RainbowText, RainbowNumber } from "@/components/RainbowText";
+import SEO from "@/components/SEO";
 import {
   Select,
   SelectContent,
@@ -13,6 +14,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Age Calculator",
+  "description": "Free online age calculator. Calculate your exact age in years, months, days, hours, minutes and seconds with birthday countdown.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+};
 
 const months = [
   "January", "February", "March", "April", "May", "June",
@@ -190,6 +200,12 @@ const AgeCalculator = () => {
 
   return (
     <div className="min-h-screen relative">
+      <SEO
+        title="Age Calculator - Calculate Your Exact Age"
+        description="Free age calculator. Find your exact age in years, months, days, hours, minutes and seconds. Includes birthday countdown timer."
+        keywords="age calculator, birthday calculator, how old am I, age in days, age in hours, birthday countdown"
+        structuredData={structuredData}
+      />
       {showConfetti && <Confetti show={showConfetti} />}
       
       {/* Decorative background */}

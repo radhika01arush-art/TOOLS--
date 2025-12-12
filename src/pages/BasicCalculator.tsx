@@ -4,6 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RainbowText, RainbowNumber } from "@/components/RainbowText";
+import SEO from "@/components/SEO";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Basic Calculator",
+  "description": "Free online calculator for basic arithmetic operations. Add, subtract, multiply, divide with decimals and percentages.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+};
 
 const BasicCalculator = () => {
   const navigate = useNavigate();
@@ -87,6 +97,12 @@ const BasicCalculator = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Basic Calculator - Free Online Calculator"
+        description="Free online basic calculator for quick arithmetic. Perform addition, subtraction, multiplication, division with decimals and percentage calculations."
+        keywords="basic calculator, online calculator, free calculator, arithmetic calculator, math calculator"
+        structuredData={structuredData}
+      />
       {/* Decorative background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />
